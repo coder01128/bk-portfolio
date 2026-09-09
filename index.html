@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bradley Kruger — AI Product Builder</title>
+<meta name="description" content="AI-powered tools that extract structured data from documents, score it, and surface actionable insights.">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --card-dark: #131921;
+    --card-light: #161d27;
+    --border: #1e2630;
+    --border-hover: #2a3442;
+    --text: #c9d1d9;
+    --text-bright: #ecf0f5;
+    --text-muted: #7d8590;
+    --accent: #4493f8;
+    --accent-hover: #6bb0ff;
+    --tag-bg: #111820;
+    --tag-border: #242d38;
+    --label-problem: #f0883e;
+    --label-solution: #4493f8;
+    --label-outcome: #3fb950;
+    --radius: 10px;
+  }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4.5rem 2.5rem 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: -0.025em;
+    margin-bottom: 0.25rem;
+  }
+
+  .header .tagline {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    max-width: 62ch;
+  }
+
+  .header-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    font-size: 0.8125rem;
+  }
+
+  .header-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .header-links a:hover { color: var(--accent); }
+
+  .header-links .hi {
+    width: 15px; height: 15px; flex-shrink: 0; opacity: 0.7;
+  }
+  .header-links a:hover .hi { opacity: 1; }
+
+  /* ── Projects ── */
+  .projects {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 2.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* ── Card ── */
+  .card {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    background: var(--card-dark);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--border-hover); }
+  .card.alt { background: var(--card-light); }
+
+  .card-img {
+    position: relative;
+    background: #090d12;
+    min-height: 300px;
+    overflow: hidden;
+  }
+  .card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top left;
+    display: block;
+  }
+  .card-img .placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8125rem; color: var(--text-muted);
+    opacity: 0.4; text-align: center; padding: 1.5rem; line-height: 1.5;
+  }
+
+  .card-body {
+    padding: 1.75rem 2.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-body h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+
+  /* ── PSO blocks ── */
+  .pso {
+    margin-bottom: 0.65rem;
+  }
+
+  .pso-label {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.2rem;
+  }
+
+  .pso-label.problem { color: var(--label-problem); }
+  .pso-label.solution { color: var(--label-solution); }
+  .pso-label.outcome { color: var(--label-outcome); }
+
+  .pso p {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.55;
+    max-width: 58ch;
+  }
+
+  .pso .sub-app {
+    margin-bottom: 0.35rem;
+  }
+  .pso .sub-app:last-child { margin-bottom: 0; }
+  .pso strong { color: var(--text-bright); font-weight: 600; }
+
+  /* ── Stack expandable ── */
+  .card-body details {
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+
+  .card-body summary {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.55rem 0;
+    font-size: 0.8125rem; font-weight: 600;
+    color: var(--text-bright);
+    cursor: pointer; list-style: none; user-select: none;
+  }
+  .card-body summary::-webkit-details-marker { display: none; }
+
+  .card-body summary::before {
+    content: '+';
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px;
+    font-size: 0.875rem; font-weight: 400;
+    color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: 4px;
+    flex-shrink: 0; transition: color 0.15s, border-color 0.15s;
+  }
+  .card-body details[open] > summary::before {
+    content: '−'; color: var(--accent); border-color: var(--accent);
+  }
+
+  .stack-tags {
+    display: flex; flex-wrap: wrap; gap: 0.35rem;
+    padding: 0 0 0.75rem 1.65rem;
+  }
+
+  .stack-tags span {
+    font-size: 0.75rem; color: var(--text-muted);
+    background: var(--tag-bg); border: 1px solid var(--tag-border);
+    padding: 0.2rem 0.6rem; border-radius: 4px; white-space: nowrap;
+  }
+
+  /* ── Card links ── */
+  .card-links {
+    margin-top: auto; padding-top: 0.75rem;
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+
+  .card-links a {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.8125rem; font-weight: 500;
+    color: var(--accent); text-decoration: none;
+    padding: 0.32rem 0.7rem;
+    border: 1px solid var(--tag-border); border-radius: 5px;
+    background: var(--tag-bg);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .card-links a:hover { border-color: var(--accent); color: var(--accent-hover); }
+
+  .card-links .ico { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* SVG icon shortcuts */
+  .globe-ico { }
+  .gh-ico { }
+
+  /* ── Footer ── */
+  .footer {
+    max-width: 1200px; margin: 0 auto;
+    padding: 2rem 2.5rem 3.5rem;
+    border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 0.35rem 1.3rem;
+    font-size: 0.8125rem;
+  }
+  .footer a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+  .footer a:hover { color: var(--accent); }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) { .card { grid-template-columns: 340px 1fr; } }
+  @media (max-width: 780px) {
+    .card { grid-template-columns: 1fr; }
+    .card-img { min-height: 220px; max-height: 280px; }
+  }
+  @media (max-width: 600px) {
+    .header { padding: 3rem 1.25rem 1rem; }
+    .header h1 { font-size: 1.5rem; }
+    .projects { padding: 1rem 1.25rem 3rem; gap: 1rem; }
+    .card-body { padding: 1.25rem; }
+    .card-img { min-height: 180px; max-height: 240px; }
+    .footer { padding: 1.5rem 1.25rem 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <h1>Bradley Kruger</h1>
+    <p class="tagline">AI-powered tools that extract structured data from documents, score it, and surface actionable insights.</p>
+    <div class="header-links">
+      <a href="mailto:mr.bradk@gmail.com">
+        <svg class="hi" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 4l8 6 8-6"/></svg>
+        mr.bradk@gmail.com
+      </a>
+      <a href="tel:+27822279048">
+        <svg class="hi" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5.4 3H8l1.5 4-2 1.5a11 11 0 005 5L14 11.5l4 1.5v2.6a1.5 1.5 0 01-1.6 1.5A15 15 0 013.9 4.6 1.5 1.5 0 015.4 3z"/></svg>
+        +27 82 227 9048
+      </a>
+      <a href="https://github.com/coder01128" target="_blank" rel="noopener">
+        <svg class="hi" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5C5.3 1.5 1.5 5.3 1.5 10c0 3.8 2.5 7 5.9 8.1.4.1.6-.2.6-.4v-2.7s-2.4.5-2.9-1.2c0 0-.4-1-.9-1.2 0 0-.8-.5.1-.5.8 0 1.2.8 1.4.9.8 1.3 2 1 2.5.7.1-.5.3-.9.6-1.1-2-.2-4-1-4-4.3 0-1 .3-1.7.9-2.3-.1-.2-.4-1.1.1-2.3 0 0 .7-.2 2.4.9a8 8 0 014.2 0c1.6-1.1 2.4-.9 2.4-.9.5 1.2.2 2.1.1 2.3.6.6.9 1.4.9 2.3 0 3.3-2 4.1-4 4.3.3.3.6.8.6 1.6v2.4c0 .2.1.5.6.4 3.4-1.1 5.9-4.3 5.9-8.1 0-4.7-3.8-8.5-8.5-8.5z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/bradley-kruger-228910235/" target="_blank" rel="noopener">
+        <svg class="hi" viewBox="0 0 20 20" fill="currentColor"><path d="M4.5 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM3.2 8h2.6v9H3.2V8zm4.6 0h2.5v1.2h0a2.8 2.8 0 012.5-1.4c2.7 0 3.2 1.8 3.2 4V17h-2.6v-4.5c0-1.1 0-2.5-1.5-2.5s-1.7 1.2-1.7 2.4V17H7.8V8z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </header>
+
+  <main class="projects">
+
+    <!-- ── 1. Contract Scorer ── -->
+    <article class="card">
+      <div class="card-img">
+        <img src="images/contract-scorer.jpg" alt="Contract Scorer dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">images/contract-scorer.jpg</div>
+      </div>
+      <div class="card-body">
+        <h2>Contract Scorer</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>Car dealerships sign vendor contracts without knowing if pricing, terms, or cancellation clauses are fair. Manual review misses escalators, hidden fees, and unfavourable data rights.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <p>Upload a vendor agreement (PDF). A vision model extracts structured fields and a weighted scoring engine evaluates the deal — Pricing 40%, Terms 30%, Flexibility 30%. Multi-tenant auth with dealership-level accounts and row-level security.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <p>Dashboard with Deal Score, subscores, market comparisons, and AI-generated negotiation talking points. Each dealership's data is fully isolated.</p>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>React/Vite</span><span>Supabase</span><span>Postgres + RLS</span><span>Auth</span><span>Claude Vision API</span><span>Vercel</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://contract-scorer.vercel.app/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live demo</a>
+          <a href="https://github.com/coder01128/contract-scorer" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── 2. Bank Statement Pipeline (alt) ── -->
+    <article class="card alt">
+      <div class="card-img">
+        <img src="images/bank-statement.jpg" alt="Bank Statement Pipeline" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">images/bank-statement.jpg</div>
+      </div>
+      <div class="card-body">
+        <h2>Bank Statement Pipeline</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>South African accountants manually extract transactions from password-protected bank statements. Different banks, different formats, hours of data entry — and one misread number means the books don't balance.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <p>Batch unlock statements from any SA bank, extract transactions via vision model, reconcile every extraction against the statement's own printed totals. Self-correcting: flags mismatches and re-runs extraction instead of passing bad data downstream.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <p>Fully client-side — no data leaves the browser. Handles any SA bank format. Catches the non-deterministic errors that vision extraction introduces before they reach the books.</p>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>Vanilla HTML/JS</span><span>Claude Vision API</span><span>Client-side PDF</span><span>Vercel</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://taxflow-bk.vercel.app" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live demo</a>
+          <a href="https://github.com/coder01128/taxflow" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── 3. FashionKiller ── -->
+    <article class="card">
+      <div class="card-img">
+        <img src="images/fashionkiller.jpg" alt="FashionKiller tools" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">images/fashionkiller.jpg</div>
+      </div>
+      <div class="card-body">
+        <h2>FashionKiller — three tools, one retail business</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>A fashion retailer with three separate bottlenecks: inconsistent product copy taking 3–5 minutes per item, manual barcode label creation burning 30 minutes every day, and a 186 MB stock spreadsheet with no KPIs.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <p><strong>Koppie-Kat:</strong> AI copy from product photo. <strong>BarcodeAuto:</strong> Spreadsheet to thermal labels with validation. <strong>Intake Dashboard:</strong> Structured data entry, margin reporting, AI-generated copy, image compression.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <p>Copy: 3–5 min → 20 seconds. Labels: 30 min → under 1 minute. All three tools in daily production use at the business.</p>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>Vanilla HTML/JS</span><span>Supabase + RLS</span><span>Claude Vision API</span><span>JsBarcode</span><span>jsPDF</span><span>Vercel</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://fashionkiller.co.za" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live on site</a>
+          <a href="https://github.com/coder01128/koppie-kat" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Koppie-Kat</a>
+          <a href="https://github.com/coder01128/barcode-auto" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>BarcodeAuto</a>
+          <a href="https://github.com/coder01128/fashionkiller-intake" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Intake</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── 4. ChopChop (alt) ── -->
+    <article class="card alt">
+      <div class="card-img">
+        <img src="images/chopchop.jpg" alt="ChopChop storefront and dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">images/chopchop.jpg</div>
+      </div>
+      <div class="card-body">
+        <h2>ChopChop</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>Small South African businesses need online ordering but can't afford custom development. Each new store meant building from scratch.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <p>Multi-tenant commerce platform — storefront, seller dashboard, and installable PWA from one codebase. Row-level tenant isolation in Postgres. Zero code changes to spin up a new tenant.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <p>Automated leak-test gate runs before every release. New tenants go live without developer involvement. Same product data drives both customer and seller interfaces.</p>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>React/Vite</span><span>Supabase</span><span>Postgres + RLS</span><span>Auth</span><span>PWA</span><span>Vercel</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://chopchoporder.co.za/demo-shoes" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Storefront</a>
+          <a href="https://app.chopchoporder.co.za?demo=1" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6h12"/></svg>Dashboard</a>
+          <a href="https://github.com/coder01128/chopchop" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── 5. Agency Content Pipeline ── -->
+    <article class="card">
+      <div class="card-img">
+        <img src="images/agency-pipeline.jpg" alt="Agency Content Pipeline workflow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">images/agency-pipeline.jpg</div>
+      </div>
+      <div class="card-body">
+        <h2>Agency Content Pipeline</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>Agency website projects start with a client brief and end with copy manually written and pasted into WordPress page by page. Slow, inconsistent, no review gate before content goes live.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <p>LangGraph agent takes a brief, generates section-by-section copy via Anthropic API tool use, checks the WordPress site's existing page structure, and pushes draft pages. Human approval gate before anything publishes.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <p>41/41 tests passing, 15 conventional commits, live end-to-end run confirmed. Built in one day.</p>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>Python</span><span>LangGraph</span><span>Anthropic API</span><span>WordPress REST API</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://github.com/coder01128/agency-content-pipeline" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer class="footer">
+    <a href="mailto:mr.bradk@gmail.com">mr.bradk@gmail.com</a>
+    <a href="https://github.com/coder01128" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://www.linkedin.com/in/bradley-kruger-228910235/" target="_blank" rel="noopener">LinkedIn</a>
+  </footer>
+
+</body>
+</html>
