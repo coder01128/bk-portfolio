@@ -249,6 +249,50 @@
   }
   .pso strong { color: var(--text-on-dark-bright); font-weight: 600; }
 
+  .pso ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pso ul li {
+    font-size: 0.85rem;
+    color: var(--text-on-dark);
+    line-height: 1.55;
+    max-width: 56ch;
+    padding-left: 0.9rem;
+    position: relative;
+    margin-bottom: 0.15rem;
+  }
+
+  .pso ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text-on-dark-muted);
+  }
+
+  .pso ul li strong { color: var(--text-on-dark-bright); font-weight: 600; }
+
+  .pso ul.labeled-list li {
+    display: flex;
+  }
+
+  .pso ul.labeled-list li strong {
+    flex-shrink: 0;
+    margin-right: 0.3em;
+  }
+
+  .pso ul.labeled-list li + li {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 0.35rem;
+    margin-top: 0.35rem;
+  }
+
   /* ── Stack expandable ── */
   .card-body details {
     border-top: 1px solid rgba(255,255,255,0.08);
@@ -509,11 +553,18 @@
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
-          <p>Upload a vendor agreement (PDF). A vision model extracts structured fields and a weighted scoring engine evaluates the deal — Pricing 40%, Terms 30%, Flexibility 30%. Multi-tenant auth with dealership-level accounts and row-level security.</p>
+          <ul>
+            <li>Upload a vendor agreement (PDF) — a vision model extracts structured fields</li>
+            <li>Weighted scoring engine evaluates the deal: Pricing 40%, Terms 30%, Flexibility 30%</li>
+            <li>Multi-tenant auth with dealership-level accounts and row-level security</li>
+          </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
-          <p>Dashboard with Deal Score, subscores, market comparisons, and AI-generated negotiation talking points. Each dealership's data is fully isolated.</p>
+          <ul>
+            <li>Dashboard with Deal Score, subscores, market comparisons, and AI-generated negotiation talking points</li>
+            <li>Each dealership's data is fully isolated</li>
+          </ul>
         </div>
         <details>
           <summary>Stack</summary>
@@ -523,7 +574,7 @@
         </details>
         <div class="card-links">
           <a href="https://contract-scorer.vercel.app/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live demo</a>
-          <a href="https://github.com/coder01128/contract-scorer" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="https://github.com/coder01128/contract-scorer" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </div>
     </article>
@@ -538,15 +589,23 @@
         <h2>Bank Statement Pipeline</h2>
         <div class="pso">
           <div class="pso-label problem">Problem</div>
-          <p>South African accountants manually extract transactions from password-protected bank statements. Different banks, different formats, hours of data entry — and one misread number means the books don't balance.</p>
+          <p>Preparing personal tax submissions means wrangling a year's worth of password-protected bank statements — different banks, different PDF formats — into categorised transactions. Tedious, manual, and easy to get wrong.</p>
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
-          <p>Batch unlock statements from any SA bank, extract transactions via vision model, reconcile every extraction against the statement's own printed totals. Self-correcting: flags mismatches and re-runs extraction instead of passing bad data downstream.</p>
+          <ul>
+            <li>Batch unlock statements from any SA bank</li>
+            <li>Extract transactions via vision model</li>
+            <li>Reconcile every extraction against the statement's own printed totals — self-correcting on mismatch</li>
+            <li>Fully client-side — no financial data leaves the browser</li>
+          </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
-          <p>Fully client-side — no data leaves the browser. Handles any SA bank format. Catches the non-deterministic errors that vision extraction introduces before they reach the books.</p>
+          <ul>
+            <li>Built to solve my own tax prep — hours of statement wrangling reduced to minutes</li>
+            <li>Privacy-first architecture makes it viable for a tax practitioner to trust with client data</li>
+          </ul>
         </div>
         <details>
           <summary>Stack</summary>
@@ -556,7 +615,7 @@
         </details>
         <div class="card-links">
           <a href="https://taxflow-bk.vercel.app" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live demo</a>
-          <a href="https://github.com/coder01128/taxflow" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="https://github.com/coder01128/taxflow" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </div>
     </article>
@@ -575,11 +634,19 @@
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
-          <p><strong>Koppie-Kat:</strong> AI copy from product photo. <strong>BarcodeAuto:</strong> Spreadsheet to thermal labels with validation. <strong>Intake Dashboard:</strong> Structured data entry, margin reporting, AI-generated copy, image compression.</p>
+          <ul class="labeled-list">
+            <li><strong>Koppie-Kat:</strong> <span>Website product copy + Instagram carousel script + TikTok video script + campaign roadmap generated from product photo</span></li>
+            <li><strong>BarcodeAuto:</strong> <span>Spreadsheet to thermal labels with validation</span></li>
+            <li><strong>Intake Dashboard:</strong> <span>Structured data entry, margin reporting, inventory + POS tracking, AI-generated copy, image compression</span></li>
+          </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
-          <p>Copy: 3–5 min → 20 seconds. Labels: 30 min → under 1 minute. All three tools in daily production use at the business.</p>
+          <ul>
+            <li>Copy: previously 3–5 minutes per product → now ~20 seconds per product</li>
+            <li>Labels: previously 30 minutes daily → now under 1 minute</li>
+            <li>All three tools in daily production use at the business</li>
+          </ul>
         </div>
         <details>
           <summary>Stack</summary>
@@ -610,11 +677,19 @@
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
-          <p>Multi-tenant commerce platform — storefront, seller dashboard, and installable PWA from one codebase. Row-level tenant isolation in Postgres. Zero code changes to spin up a new tenant.</p>
+          <ul>
+            <li>Multi-tenant commerce platform — storefront, seller dashboard, and installable PWA from one codebase</li>
+            <li>Row-level tenant isolation in Postgres</li>
+            <li>Automated leak-test gate runs before every release</li>
+            <li>Same product data drives both customer and seller interfaces</li>
+          </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
-          <p>Automated leak-test gate runs before every release. New tenants go live without developer involvement. Same product data drives both customer and seller interfaces.</p>
+          <ul>
+            <li>Zero code changes to spin up a new tenant</li>
+            <li>New tenants go live without developer involvement</li>
+          </ul>
         </div>
         <details>
           <summary>Stack</summary>
@@ -625,7 +700,7 @@
         <div class="card-links">
           <a href="https://chopchoporder.co.za/demo-shoes" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Storefront</a>
           <a href="https://app.chopchoporder.co.za?demo=1" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6h12"/></svg>Dashboard</a>
-          <a href="https://github.com/coder01128/chopchop" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="https://github.com/coder01128/chopchop" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </div>
     </article>
@@ -644,11 +719,19 @@
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
-          <p>LangGraph agent takes a brief, generates section-by-section copy via Anthropic API tool use, checks the WordPress site's existing page structure, and pushes draft pages. Human approval gate before anything publishes.</p>
+          <ul>
+            <li>LangGraph agent takes a brief, generates section-by-section copy via Anthropic API tool use</li>
+            <li>Checks the WordPress site's existing page structure and pushes draft pages</li>
+            <li>Human approval gate before anything publishes</li>
+          </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
-          <p>41/41 tests passing, 15 conventional commits, live end-to-end run confirmed. Built in one day.</p>
+          <ul>
+            <li>Brief-to-published-draft with zero manual copy-pasting</li>
+            <li>Nothing goes live without human sign-off</li>
+            <li>41/41 tests passing — entire pipeline built and validated in one day</li>
+          </ul>
         </div>
         <details>
           <summary>Stack</summary>
@@ -657,7 +740,7 @@
           </div>
         </details>
         <div class="card-links">
-          <a href="https://github.com/coder01128/agency-content-pipeline" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="https://github.com/coder01128/agency-content-pipeline" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </div>
     </article>
@@ -680,7 +763,7 @@
           <span>Vanilla HTML/JS</span><span>Vercel</span>
         </div>
         <div class="card-links">
-          <a href="https://github.com/coder01128/unvault" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="https://github.com/coder01128/unvault" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </article>
 
@@ -692,19 +775,19 @@
           <span>Vanilla HTML/JS</span>
         </div>
         <div class="card-links">
-          <a href="#" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="#" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </article>
 
       <!-- PLACEHOLDER — verify content and links -->
       <article class="hobby-card" data-tech="vanilla-js">
-        <h3>Guitar Theory</h3>
-        <p class="hobby-desc">Interactive circle-of-fifths explorer and lesson tracker for self-taught musicians.</p>
+        <h3>Guitar Zero</h3>
+        <p class="hobby-desc">Interactive guitar theory tutor for beginners.</p>
         <div class="stack-tags">
           <span>Vanilla HTML/JS</span>
         </div>
         <div class="card-links">
-          <a href="#" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+          <a href="#" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </article>
 
