@@ -4,27 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bradley Kruger — AI Product Builder</title>
-<meta name="description" content="AI-powered tools that extract structured data from documents, score it, and surface actionable insights.">
+<meta name="description" content="I build AI tools that deliver measurable cost and time savings for real businesses.">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #0d1117;
-    --card-dark: #131921;
-    --card-light: #161d27;
-    --border: #1e2630;
-    --border-hover: #2a3442;
-    --text: #c9d1d9;
-    --text-bright: #ecf0f5;
-    --text-muted: #7d8590;
-    --accent: #4493f8;
-    --accent-hover: #6bb0ff;
-    --tag-bg: #111820;
-    --tag-border: #242d38;
-    --label-problem: #f0883e;
-    --label-solution: #4493f8;
-    --label-outcome: #3fb950;
-    --radius: 10px;
+    --bg: #F0EFEB;
+    --card: #1D1D1F;
+    --card-hover: #252527;
+    --card-border: #2C2C2E;
+    --card-img-bg: #141416;
+    --text-on-light: #1D1D1F;
+    --text-on-light-sub: #55555A;
+    --text-on-dark: #E5E5E7;
+    --text-on-dark-bright: #FFFFFF;
+    --text-on-dark-muted: #8E8E93;
+    --accent: #3B82F6;
+    --accent-hover: #60A5FA;
+    --tag-bg: rgba(255,255,255,0.06);
+    --tag-border: rgba(255,255,255,0.10);
+    --label-problem: #F59E42;
+    --label-solution: #60A5FA;
+    --label-outcome: #4ADE80;
+    --chip-bg: transparent;
+    --chip-border: #1D1D1F;
+    --chip-active-bg: #1D1D1F;
+    --chip-active-text: #FFFFFF;
+    --radius: 8px;
+    --radius-sm: 5px;
+    --hobby-card: #FFFFFF;
+    --hobby-border: #D4D4D4;
   }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
@@ -33,81 +42,159 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
     background: var(--bg);
-    color: var(--text);
+    color: var(--text-on-light);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
+  /* ── Layout ── */
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
   /* ── Header ── */
   .header {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 4.5rem 2.5rem 1.5rem;
+    padding-top: 4.5rem;
+    padding-bottom: 1rem;
   }
 
   .header h1 {
-    font-size: 2rem;
+    font-size: 2.25rem;
     font-weight: 700;
-    color: var(--text-bright);
-    letter-spacing: -0.025em;
-    margin-bottom: 0.25rem;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--text-on-light);
   }
 
   .header .tagline {
-    font-size: 1rem;
-    color: var(--text-muted);
+    font-size: 1.05rem;
+    color: var(--text-on-light-sub);
+    margin-top: 0.35rem;
     margin-bottom: 1.2rem;
-    max-width: 62ch;
+    max-width: 56ch;
+    line-height: 1.5;
   }
 
   .header-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem 1.5rem;
+    gap: 0.35rem 1.4rem;
     font-size: 0.8125rem;
   }
 
   .header-links a {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    color: var(--text-muted);
+    gap: 0.35rem;
+    color: var(--text-on-light-sub);
     text-decoration: none;
     transition: color 0.15s;
   }
   .header-links a:hover { color: var(--accent); }
 
   .header-links .hi {
-    width: 15px; height: 15px; flex-shrink: 0; opacity: 0.7;
+    width: 14px; height: 14px; flex-shrink: 0; opacity: 0.6;
   }
   .header-links a:hover .hi { opacity: 1; }
 
-  /* ── Projects ── */
+  /* ── Filter chips ── */
+  .filters {
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .filter-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-on-light-sub);
+    width: 140px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .chip {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.4rem 0.85rem;
+    border: 1.5px solid var(--chip-border);
+    border-radius: 100px;
+    background: var(--chip-bg);
+    color: var(--text-on-light);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .chip:hover {
+    background: rgba(29,29,31,0.06);
+  }
+  .chip.active {
+    background: var(--chip-active-bg);
+    color: var(--chip-active-text);
+    border-color: var(--chip-active-bg);
+  }
+
+  .chip-all {
+    margin-bottom: 0.2rem;
+  }
+
+  /* ── Projects grid ── */
   .projects {
-    max-width: 1440px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1.5rem 2.5rem 4rem;
+    padding: 0 3.5% 3rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
 
+  .projects .card:nth-child(odd) {
+    margin-right: 10%;
+  }
+
+  .projects .card:nth-child(even) {
+    margin-left: 10%;
+  }
+
   /* ── Card ── */
   .card {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    background: var(--card-dark);
-    border: 1px solid var(--border);
+    grid-template-columns: 1.1fr 1fr;
+    background: var(--card);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius);
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, transform 0.2s;
   }
-  .card:hover { border-color: var(--border-hover); }
-  .card.alt { background: var(--card-light); }
+  .card:hover {
+    border-color: #3A3A3C;
+    transform: translateY(-1px);
+  }
+
+  .card:nth-child(even) {
+    direction: rtl;
+  }
+  .card:nth-child(even) > * {
+    direction: ltr;
+  }
 
   .card-img {
     position: relative;
-    background: #090d12;
+    background: var(--card-img-bg);
     min-height: 300px;
     overflow: hidden;
   }
@@ -119,12 +206,12 @@
   .card-img .placeholder {
     width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.8125rem; color: var(--text-muted);
-    opacity: 0.4; text-align: center; padding: 1.5rem; line-height: 1.5;
+    font-size: 0.8125rem; color: var(--text-on-dark-muted);
+    opacity: 0.35; text-align: center; padding: 1.5rem; line-height: 1.5;
   }
 
   .card-body {
-    padding: 1.75rem 2.25rem 1.5rem;
+    padding: 1.75rem 2rem 1.5rem;
     display: flex;
     flex-direction: column;
   }
@@ -132,23 +219,22 @@
   .card-body h2 {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-bright);
+    color: var(--text-on-dark-bright);
     letter-spacing: -0.01em;
-    margin-bottom: 1rem;
+    margin-bottom: 0.9rem;
   }
 
   /* ── PSO blocks ── */
   .pso {
-    margin-bottom: 0.65rem;
+    margin-bottom: 0.6rem;
   }
 
   .pso-label {
     display: inline-block;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.15rem;
   }
 
   .pso-label.problem { color: var(--label-problem); }
@@ -157,28 +243,23 @@
 
   .pso p {
     font-size: 0.85rem;
-    color: var(--text);
+    color: var(--text-on-dark);
     line-height: 1.55;
-    max-width: 58ch;
+    max-width: 56ch;
   }
-
-  .pso .sub-app {
-    margin-bottom: 0.35rem;
-  }
-  .pso .sub-app:last-child { margin-bottom: 0; }
-  .pso strong { color: var(--text-bright); font-weight: 600; }
+  .pso strong { color: var(--text-on-dark-bright); font-weight: 600; }
 
   /* ── Stack expandable ── */
   .card-body details {
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255,255,255,0.08);
     margin-top: 0.5rem;
   }
 
   .card-body summary {
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.55rem 0;
+    display: flex; align-items: center; gap: 0.45rem;
+    padding: 0.5rem 0;
     font-size: 0.8125rem; font-weight: 600;
-    color: var(--text-bright);
+    color: var(--text-on-dark-bright);
     cursor: pointer; list-style: none; user-select: none;
   }
   .card-body summary::-webkit-details-marker { display: none; }
@@ -186,82 +267,175 @@
   .card-body summary::before {
     content: '+';
     display: inline-flex; align-items: center; justify-content: center;
-    width: 18px; height: 18px;
-    font-size: 0.875rem; font-weight: 400;
-    color: var(--text-muted);
-    border: 1px solid var(--border); border-radius: 4px;
+    width: 17px; height: 17px;
+    font-size: 0.8125rem; font-weight: 400;
+    color: var(--text-on-dark-muted);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 3px;
     flex-shrink: 0; transition: color 0.15s, border-color 0.15s;
   }
   .card-body details[open] > summary::before {
-    content: '−'; color: var(--accent); border-color: var(--accent);
+    content: '\2212'; color: var(--accent); border-color: var(--accent);
   }
 
   .stack-tags {
-    display: flex; flex-wrap: wrap; gap: 0.35rem;
-    padding: 0 0 0.75rem 1.65rem;
+    display: flex; flex-wrap: wrap; gap: 0.3rem;
+    padding: 0 0 0.6rem 1.5rem;
   }
 
   .stack-tags span {
-    font-size: 0.75rem; color: var(--text-muted);
+    font-size: 0.75rem; color: var(--text-on-dark-muted);
     background: var(--tag-bg); border: 1px solid var(--tag-border);
-    padding: 0.2rem 0.6rem; border-radius: 4px; white-space: nowrap;
+    padding: 0.18rem 0.55rem; border-radius: 3px; white-space: nowrap;
   }
 
   /* ── Card links ── */
   .card-links {
-    margin-top: auto; padding-top: 0.75rem;
-    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: auto; padding-top: 0.7rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
   }
 
   .card-links a {
     display: inline-flex; align-items: center; gap: 0.3rem;
     font-size: 0.8125rem; font-weight: 500;
     color: var(--accent); text-decoration: none;
-    padding: 0.32rem 0.7rem;
-    border: 1px solid var(--tag-border); border-radius: 5px;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--tag-border); border-radius: var(--radius-sm);
     background: var(--tag-bg);
     transition: border-color 0.15s, color 0.15s;
   }
   .card-links a:hover { border-color: var(--accent); color: var(--accent-hover); }
-
   .card-links .ico { width: 13px; height: 13px; flex-shrink: 0; }
 
-  /* SVG icon shortcuts */
-  .globe-ico { }
-  .gh-ico { }
+  /* ── Section divider ── */
+  .section-heading {
+    padding-top: 1rem;
+    padding-bottom: 1.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-on-light);
+    letter-spacing: -0.01em;
+    border-top: 1px solid #C8C7C3;
+  }
+
+  /* ── Hobby grid ── */
+  .hobby-section {
+    padding-bottom: 3rem;
+  }
+
+  .hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+  }
+
+  .hobby-card {
+    background: var(--hobby-card);
+    border: 1px solid var(--hobby-border);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.4rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .hobby-card:hover {
+    border-color: #A0A0A0;
+    transform: translateY(-1px);
+  }
+
+  .hobby-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-on-light);
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hobby-card .hobby-desc {
+    font-size: 0.8125rem;
+    color: var(--text-on-light-sub);
+    line-height: 1.5;
+    margin-bottom: 0.7rem;
+    flex: 1;
+  }
+
+  .hobby-card .stack-tags {
+    padding: 0;
+    margin-bottom: 0.6rem;
+  }
+
+  .hobby-card .stack-tags span {
+    color: var(--text-on-light-sub);
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.10);
+  }
+
+  .hobby-card .card-links {
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .hobby-card .card-links a {
+    color: var(--text-on-light);
+    border-color: var(--hobby-border);
+    background: transparent;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.55rem;
+  }
+  .hobby-card .card-links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .hobby-card .card-links .ico { width: 12px; height: 12px; }
 
   /* ── Footer ── */
   .footer {
-    max-width: 1440px; margin: 0 auto;
-    padding: 2rem 2.5rem 3.5rem;
-    border-top: 1px solid var(--border);
+    padding: 2rem 0 3.5rem;
+    border-top: 1px solid #C8C7C3;
     display: flex; flex-wrap: wrap; gap: 0.35rem 1.3rem;
     font-size: 0.8125rem;
   }
-  .footer a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+  .footer a { color: var(--text-on-light-sub); text-decoration: none; transition: color 0.15s; }
   .footer a:hover { color: var(--accent); }
 
   /* ── Responsive ── */
-  @media (max-width: 960px) { .card { grid-template-columns: 2fr 1fr; } }
-  @media (max-width: 780px) {
-    .card { grid-template-columns: 1fr; }
-    .card-img { min-height: 220px; max-height: 280px; }
+  @media (max-width: 1100px) {
+    .projects .card:nth-child(odd) { margin-right: 5%; }
+    .projects .card:nth-child(even) { margin-left: 5%; }
   }
+
+  @media (max-width: 880px) {
+    .card { grid-template-columns: 1fr; }
+    .card:nth-child(even) { direction: ltr; }
+    .card-img { min-height: 220px; max-height: 280px; }
+    .projects .card:nth-child(odd),
+    .projects .card:nth-child(even) { margin-left: 0; margin-right: 0; }
+    .projects { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hobby-grid { grid-template-columns: repeat(2, 1fr); }
+    .filter-label { width: 100px; font-size: 0.7rem; }
+  }
+
   @media (max-width: 600px) {
-    .header { padding: 3rem 1.25rem 1rem; }
-    .header h1 { font-size: 1.5rem; }
-    .projects { padding: 1rem 1.25rem 3rem; gap: 1rem; }
+    .wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .header { padding-top: 2.75rem; }
+    .header h1 { font-size: 1.65rem; }
     .card-body { padding: 1.25rem; }
     .card-img { min-height: 180px; max-height: 240px; }
-    .footer { padding: 1.5rem 1.25rem 2.5rem; }
+    .projects { padding-left: 1rem; padding-right: 1rem; }
+    .hobby-grid { grid-template-columns: 1fr; }
+    .footer { padding: 1.5rem 0 2.5rem; }
+    .filter-label { width: auto; flex-shrink: 1; }
   }
+
+  /* ── Filter transitions ── */
+  .card, .hobby-card { transition: border-color 0.2s, transform 0.2s, opacity 0.25s; }
+  .card.hidden, .hobby-card.hidden { display: none; }
 </style>
 </head>
 <body>
 
-  <header class="header">
+  <header class="header wrap">
     <h1>Bradley Kruger</h1>
-    <p class="tagline">AI-powered tools that extract structured data from documents, score it, and surface actionable insights.</p>
+    <p class="tagline">I build AI tools that deliver measurable cost and time savings for real businesses.</p>
     <div class="header-links">
       <a href="mailto:mr.bradk@gmail.com">
         <svg class="hi" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 4l8 6 8-6"/></svg>
@@ -282,13 +456,50 @@
     </div>
   </header>
 
+  <!-- ── Filter Chips ── -->
+  <nav class="filters wrap" aria-label="Filter projects by technology">
+    <div class="chip-all">
+      <button class="chip active" data-tech="all">All</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Languages & frameworks</span>
+      <button class="chip" data-tech="react-vite">React/Vite</button>
+      <button class="chip" data-tech="vanilla-js">Vanilla HTML/JS</button>
+      <button class="chip" data-tech="python">Python</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Backend & data</span>
+      <button class="chip" data-tech="supabase">Supabase</button>
+      <button class="chip" data-tech="postgres-rls">Postgres + RLS</button>
+      <button class="chip" data-tech="auth">Auth</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">AI/ML</span>
+      <button class="chip" data-tech="claude-vision">Claude Vision API</button>
+      <button class="chip" data-tech="anthropic-api">Anthropic API</button>
+      <button class="chip" data-tech="langgraph">LangGraph</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">Tooling & deploy</span>
+      <button class="chip" data-tech="client-side-pdf">Client-side PDF</button>
+      <button class="chip" data-tech="jsbarcode">JsBarcode</button>
+      <button class="chip" data-tech="jspdf">jsPDF</button>
+      <button class="chip" data-tech="pwa">PWA</button>
+      <button class="chip" data-tech="rest-api">REST API</button>
+      <button class="chip" data-tech="vercel">Vercel</button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════ -->
+  <!--  MAIN PROJECTS                        -->
+  <!-- ══════════════════════════════════════ -->
   <main class="projects">
 
     <!-- ── 1. Contract Scorer ── -->
-    <article class="card">
+    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,claude-vision,vercel">
       <div class="card-img">
         <img src="images/contract-scorer.jpg" alt="Contract Scorer dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">images/contract-scorer.jpg</div>
+        <div class="placeholder" style="display:none">Screenshot pending</div>
       </div>
       <div class="card-body">
         <h2>Contract Scorer</h2>
@@ -317,11 +528,11 @@
       </div>
     </article>
 
-    <!-- ── 2. Bank Statement Pipeline (alt) ── -->
-    <article class="card alt">
+    <!-- ── 2. Bank Statement Pipeline ── -->
+    <article class="card" data-tech="vanilla-js,claude-vision,client-side-pdf,vercel">
       <div class="card-img">
         <img src="images/bank-statement.jpg" alt="Bank Statement Pipeline" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">images/bank-statement.jpg</div>
+        <div class="placeholder" style="display:none">Screenshot pending</div>
       </div>
       <div class="card-body">
         <h2>Bank Statement Pipeline</h2>
@@ -351,10 +562,10 @@
     </article>
 
     <!-- ── 3. FashionKiller ── -->
-    <article class="card">
+    <article class="card" data-tech="vanilla-js,supabase,claude-vision,jsbarcode,jspdf,vercel">
       <div class="card-img">
         <img src="images/fashionkiller.jpg" alt="FashionKiller tools" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">images/fashionkiller.jpg</div>
+        <div class="placeholder" style="display:none">Screenshot pending</div>
       </div>
       <div class="card-body">
         <h2>FashionKiller — three tools, one retail business</h2>
@@ -385,11 +596,11 @@
       </div>
     </article>
 
-    <!-- ── 4. ChopChop (alt) ── -->
-    <article class="card alt">
+    <!-- ── 4. ChopChop ── -->
+    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,pwa,vercel">
       <div class="card-img">
         <img src="images/chopchop.jpg" alt="ChopChop storefront and dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">images/chopchop.jpg</div>
+        <div class="placeholder" style="display:none">Screenshot pending</div>
       </div>
       <div class="card-body">
         <h2>ChopChop</h2>
@@ -420,10 +631,10 @@
     </article>
 
     <!-- ── 5. Agency Content Pipeline ── -->
-    <article class="card">
+    <article class="card" data-tech="python,langgraph,anthropic-api,rest-api">
       <div class="card-img">
         <img src="images/agency-pipeline.jpg" alt="Agency Content Pipeline workflow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">images/agency-pipeline.jpg</div>
+        <div class="placeholder" style="display:none">Screenshot pending</div>
       </div>
       <div class="card-body">
         <h2>Agency Content Pipeline</h2>
@@ -453,11 +664,108 @@
 
   </main>
 
-  <footer class="footer">
+  <!-- ══════════════════════════════════════ -->
+  <!--  SIDE PROJECTS                        -->
+  <!--  Replace placeholder content below    -->
+  <!-- ══════════════════════════════════════ -->
+  <section class="hobby-section wrap" id="hobby-section">
+    <div class="section-heading">Side projects</div>
+    <div class="hobby-grid">
+
+      <!-- PLACEHOLDER — verify content and links -->
+      <article class="hobby-card" data-tech="vanilla-js,vercel">
+        <h3>unVault</h3>
+        <p class="hobby-desc">Drag-and-drop PDF password remover. Fully client-side — files never leave the browser.</p>
+        <div class="stack-tags">
+          <span>Vanilla HTML/JS</span><span>Vercel</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/coder01128/unvault" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </article>
+
+      <!-- PLACEHOLDER — verify content and links -->
+      <article class="hobby-card" data-tech="vanilla-js">
+        <h3>Meerkat Comedy</h3>
+        <p class="hobby-desc">Spotlight timer, audience meter, and act scheduler for managing live comedy nights. Works fully offline.</p>
+        <div class="stack-tags">
+          <span>Vanilla HTML/JS</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </article>
+
+      <!-- PLACEHOLDER — verify content and links -->
+      <article class="hobby-card" data-tech="vanilla-js">
+        <h3>Guitar Theory</h3>
+        <p class="hobby-desc">Interactive circle-of-fifths explorer and lesson tracker for self-taught musicians.</p>
+        <div class="stack-tags">
+          <span>Vanilla HTML/JS</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Source</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer class="footer wrap">
     <a href="mailto:mr.bradk@gmail.com">mr.bradk@gmail.com</a>
     <a href="https://github.com/coder01128" target="_blank" rel="noopener">GitHub</a>
     <a href="https://www.linkedin.com/in/bradley-kruger-228910235/" target="_blank" rel="noopener">LinkedIn</a>
   </footer>
+
+  <script>
+    (function() {
+      const chips = document.querySelectorAll('.chip');
+      const allCards = document.querySelectorAll('[data-tech]');
+      const hobbySection = document.getElementById('hobby-section');
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const tech = chip.dataset.tech;
+
+          if (tech === 'all') {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            allCards.forEach(c => c.classList.remove('hidden'));
+            hobbySection.style.display = '';
+            return;
+          }
+
+          chip.classList.toggle('active');
+          document.querySelector('.chip[data-tech="all"]').classList.remove('active');
+
+          const active = [...document.querySelectorAll('.chip.active')].map(c => c.dataset.tech);
+
+          if (active.length === 0) {
+            document.querySelector('.chip[data-tech="all"]').classList.add('active');
+            allCards.forEach(c => c.classList.remove('hidden'));
+            hobbySection.style.display = '';
+            return;
+          }
+
+          let anyHobbyVisible = false;
+
+          allCards.forEach(card => {
+            const cardTech = card.dataset.tech.split(',');
+            const match = active.some(t => cardTech.includes(t));
+
+            if (match) {
+              card.classList.remove('hidden');
+              if (card.classList.contains('hobby-card')) anyHobbyVisible = true;
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+
+          hobbySection.style.display = anyHobbyVisible ? '' : 'none';
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
