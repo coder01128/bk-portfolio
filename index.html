@@ -260,20 +260,20 @@
     color: var(--text-on-dark);
     line-height: 1.55;
     max-width: 56ch;
-    padding-left: 0.9rem;
-    position: relative;
+    display: flex;
+    align-items: flex-start;
     margin-bottom: 0.15rem;
   }
 
   .pso ul li::before {
     content: '';
-    position: absolute;
-    left: 0;
-    top: 0.55em;
+    flex-shrink: 0;
     width: 4px;
     height: 4px;
     border-radius: 50%;
     background: var(--text-on-dark-muted);
+    margin-right: 0.55rem;
+    margin-top: 0.6em;
   }
 
   .pso ul li strong { color: var(--text-on-dark-bright); font-weight: 600; }
