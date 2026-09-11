@@ -100,6 +100,57 @@
   }
   .header-links a:hover .hi { opacity: 1; }
 
+  /* ── About Me ── */
+  .about-section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .about-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-on-light);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    padding: 0.4rem 0;
+    border: none;
+    background: none;
+  }
+  .about-toggle::-webkit-details-marker { display: none; }
+
+  .about-toggle::before {
+    content: '+';
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px;
+    font-size: 0.875rem; font-weight: 400;
+    color: var(--text-on-light-sub);
+    border: 1.5px solid var(--chip-border); border-radius: 4px;
+    flex-shrink: 0; transition: color 0.15s, border-color 0.15s;
+  }
+  .about-details[open] > .about-toggle::before {
+    content: '\2212'; color: var(--accent); border-color: var(--accent);
+  }
+
+  .about-text {
+    max-width: 68ch;
+    padding: 0.75rem 0 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-on-light);
+  }
+
+  .about-text p {
+    margin-bottom: 0.85rem;
+  }
+
+  .about-text p:last-child {
+    margin-bottom: 0;
+  }
+
   /* ── Filter chips ── */
   .filters {
     padding-top: 0.75rem;
@@ -192,23 +243,92 @@
     direction: ltr;
   }
 
-  .card-img {
+  /* ── Carousel ── */
+  .card-carousel {
     position: relative;
     background: var(--card-img-bg);
     min-height: 300px;
     overflow: hidden;
   }
-  .card-img img {
+
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    height: 100%;
+  }
+  .carousel-track::-webkit-scrollbar { display: none; }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-height: 300px;
+  }
+
+  .carousel-slide img {
     width: 100%; height: 100%;
     object-fit: contain; object-position: center;
     display: block;
   }
-  .card-img .placeholder {
+
+  .carousel-slide .placeholder {
     width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.8125rem; color: var(--text-on-dark-muted);
     opacity: 0.35; text-align: center; padding: 1.5rem; line-height: 1.5;
   }
+
+  /* Carousel dots — hidden when single slide */
+  .carousel-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+  }
+  .carousel-dots[data-count="1"] { display: none; }
+
+  .carousel-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s;
+  }
+  .carousel-dot.active {
+    background: rgba(255,255,255,0.9);
+  }
+
+  /* Carousel arrows — hidden when single slide */
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.45);
+    border: none;
+    color: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
+    z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .card-carousel:hover .carousel-arrow { opacity: 1; }
+  .carousel-arrow:hover { background: rgba(0,0,0,0.7); }
+  .carousel-arrow.prev { left: 8px; }
+  .carousel-arrow.next { right: 8px; }
+  .carousel-arrow[data-hidden="true"] { display: none; }
 
   .card-body {
     padding: 1.75rem 2rem 1.5rem;
@@ -450,7 +570,8 @@
   @media (max-width: 880px) {
     .card { grid-template-columns: 1fr; }
     .card:nth-child(even) { direction: ltr; }
-    .card-img { min-height: 220px; max-height: 280px; }
+    .card-carousel { min-height: 220px; max-height: 280px; }
+    .carousel-slide { min-height: 220px; }
     .projects .card:nth-child(odd),
     .projects .card:nth-child(even) { margin-left: 0; margin-right: 0; }
     .projects { padding-left: 1.5rem; padding-right: 1.5rem; }
@@ -463,7 +584,8 @@
     .header { padding-top: 2.75rem; }
     .header h1 { font-size: 1.65rem; }
     .card-body { padding: 1.25rem; }
-    .card-img { min-height: 180px; max-height: 240px; }
+    .card-carousel { min-height: 180px; max-height: 240px; }
+    .carousel-slide { min-height: 180px; }
     .projects { padding-left: 1rem; padding-right: 1rem; }
     .hobby-grid { grid-template-columns: 1fr; }
     .footer { padding: 1.5rem 0 2.5rem; }
@@ -500,6 +622,19 @@
     </div>
   </header>
 
+  <!-- ── About Me ── -->
+  <section class="about-section wrap">
+    <details class="about-details">
+      <summary class="about-toggle">About me</summary>
+      <div class="about-text">
+        <p>My journey to becoming a developer hasn't been the usual path. I was the youngest person to be admitted to the trading floor of the Johannesburg Stock Exchange, which led to a career in the financial markets as a professional stocks and futures trader for about 15 years. This was punctuated by an intended 6-month visit to London that turned into 12 years, wherein I founded and managed a small retail business for 9 years before selling the company.</p>
+        <p>My interest and exposure to coding and development began in 2019 when I enrolled for Harvard's online CS50-x course, with the intent of learning skills that would help me in my professional trader capacity. After completing the course I began developing personal tools to improve efficiency in my daily work process.</p>
+        <p>In more recent years, as AI-powered dev tools have become more capable and accessible, I noticed that I enjoy solving problems with software products more than I was enjoying my trading role, leading to a carefully considered career pivot from trading into dev.</p>
+        <p>I haven't obtained a CS degree. What I did do is teach myself to architect, build, and ship production applications using AI as my implementation layer. If you're looking for someone who writes pristine TypeScript from memory, I'm not your candidate. If you're looking for someone who can take a business problem and ship a working, deployed solution in days — using the tools that are making that possible right now — I'd like to talk.</p>
+      </div>
+    </details>
+  </section>
+
   <!-- ── Filter Chips ── -->
   <nav class="filters wrap" aria-label="Filter projects by technology">
     <div class="chip-all">
@@ -510,12 +645,14 @@
       <button class="chip" data-tech="react-vite">React/Vite</button>
       <button class="chip" data-tech="vanilla-js">Vanilla HTML/JS</button>
       <button class="chip" data-tech="python">Python</button>
+      <button class="chip" data-tech="nodejs">Node.js</button>
     </div>
     <div class="filter-row">
       <span class="filter-label">Backend & data</span>
       <button class="chip" data-tech="supabase">Supabase</button>
       <button class="chip" data-tech="postgres-rls">Postgres + RLS</button>
       <button class="chip" data-tech="auth">Auth</button>
+      <button class="chip" data-tech="multi-tenant-saas">Multi-tenant SaaS</button>
     </div>
     <div class="filter-row">
       <span class="filter-label">AI/ML</span>
@@ -524,7 +661,17 @@
       <button class="chip" data-tech="langgraph">LangGraph</button>
     </div>
     <div class="filter-row">
+      <span class="filter-label">AI capabilities</span>
+      <button class="chip" data-tech="rag">RAG</button>
+      <button class="chip" data-tech="agentic-orchestration">Agentic Orchestration</button>
+      <button class="chip" data-tech="document-processing">Document Processing</button>
+      <button class="chip" data-tech="prompt-engineering">Prompt Engineering</button>
+      <button class="chip" data-tech="mcp">MCP</button>
+    </div>
+    <div class="filter-row">
       <span class="filter-label">Tooling & deploy</span>
+      <button class="chip" data-tech="n8n">n8n</button>
+      <button class="chip" data-tech="docker">Docker</button>
       <button class="chip" data-tech="client-side-pdf">Client-side PDF</button>
       <button class="chip" data-tech="jsbarcode">JsBarcode</button>
       <button class="chip" data-tech="jspdf">jsPDF</button>
@@ -540,10 +687,19 @@
   <main class="projects">
 
     <!-- ── 1. Contract Scorer ── -->
-    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,claude-vision,vercel">
-      <div class="card-img">
-        <img src="images/contract-scorer.jpg" alt="Contract Scorer dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">Screenshot pending</div>
+    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,claude-vision,anthropic-api,vercel,document-processing,prompt-engineering">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/contract-scorer.jpg" alt="Contract Scorer dashboard" onerror="this.style.display='none'">
+          </div>
+          <!-- Add more slides: <div class="carousel-slide"><img src="images/contract-scorer-2.jpg" alt="..."></div> -->
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
         <h2>Contract Scorer</h2>
@@ -580,10 +736,18 @@
     </article>
 
     <!-- ── 2. Bank Statement Pipeline ── -->
-    <article class="card" data-tech="vanilla-js,claude-vision,client-side-pdf,vercel">
-      <div class="card-img">
-        <img src="images/bank-statement.jpg" alt="Bank Statement Pipeline" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">Screenshot pending</div>
+    <article class="card" data-tech="vanilla-js,claude-vision,anthropic-api,client-side-pdf,vercel,document-processing">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/bank-statement.jpg" alt="Bank Statement Pipeline" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
         <h2>Bank Statement Pipeline</h2>
@@ -621,10 +785,18 @@
     </article>
 
     <!-- ── 3. FashionKiller ── -->
-    <article class="card" data-tech="vanilla-js,supabase,claude-vision,jsbarcode,jspdf,vercel">
-      <div class="card-img">
-        <img src="images/fashionkiller.jpg" alt="FashionKiller tools" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">Screenshot pending</div>
+    <article class="card" data-tech="vanilla-js,supabase,claude-vision,anthropic-api,jsbarcode,jspdf,vercel,prompt-engineering,document-processing">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/fashionkiller.jpg" alt="FashionKiller tools" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
         <h2>FashionKiller — three tools, one retail business</h2>
@@ -664,10 +836,18 @@
     </article>
 
     <!-- ── 4. ChopChop ── -->
-    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,pwa,vercel">
-      <div class="card-img">
-        <img src="images/chopchop.jpg" alt="ChopChop storefront and dashboard" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">Screenshot pending</div>
+    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,pwa,vercel,multi-tenant-saas">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/chopchop.jpg" alt="ChopChop storefront and dashboard" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
         <h2>ChopChop</h2>
@@ -706,10 +886,18 @@
     </article>
 
     <!-- ── 5. Agency Content Pipeline ── -->
-    <article class="card" data-tech="python,langgraph,anthropic-api,rest-api">
-      <div class="card-img">
-        <img src="images/agency-pipeline.jpg" alt="Agency Content Pipeline workflow" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="placeholder" style="display:none">Screenshot pending</div>
+    <article class="card" data-tech="python,langgraph,anthropic-api,rest-api,agentic-orchestration,prompt-engineering">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/agency-pipeline.jpg" alt="Agency Content Pipeline workflow" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
         <h2>Agency Content Pipeline</h2>
@@ -749,14 +937,45 @@
 
   <!-- ══════════════════════════════════════ -->
   <!--  SIDE PROJECTS                        -->
-  <!--  Replace placeholder content below    -->
   <!-- ══════════════════════════════════════ -->
   <section class="hobby-section wrap" id="hobby-section">
     <div class="section-heading">Side projects</div>
     <div class="hobby-grid">
 
-      <!-- PLACEHOLDER — verify content and links -->
-      <article class="hobby-card" data-tech="vanilla-js,vercel">
+      <article class="hobby-card" data-tech="react-vite,supabase,anthropic-api,rag,vercel">
+        <h3>Case File Assistant</h3>
+        <p class="hobby-desc">RAG-powered search over personal injury case files. Upload case documents, embed with pgvector, query in natural language with source citations.</p>
+        <div class="stack-tags">
+          <span>React/Vite</span><span>Supabase</span><span>pgvector</span><span>Anthropic API</span><span>RAG</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/coder01128/case-file-assistant" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="hobby-card" data-tech="nodejs,mcp,rest-api">
+        <h3>ChopChop MCP Server</h3>
+        <p class="hobby-desc">Model Context Protocol server wrapping ChopChop's multi-tenant Supabase backend. Exposes tenants, products, orders, and item management as MCP tools.</p>
+        <div class="stack-tags">
+          <span>Node.js</span><span>TypeScript</span><span>MCP</span><span>Supabase</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/coder01128/chopchop-mcp-server" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="hobby-card" data-tech="n8n,docker,rest-api,agentic-orchestration">
+        <h3>n8n Automation Pipelines</h3>
+        <p class="hobby-desc">Self-hosted n8n workflows: daily job-matching pipeline (Gmail → AI scoring → digest), broker research summariser, and SA M&A news monitor. Dockerised on a local server.</p>
+        <div class="stack-tags">
+          <span>n8n</span><span>Docker</span><span>REST APIs</span><span>Gmail</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/coder01128" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </article>
+
+      <article class="hobby-card" data-tech="vanilla-js,client-side-pdf,vercel">
         <h3>unVault</h3>
         <p class="hobby-desc">Drag-and-drop PDF password remover. Fully client-side — files never leave the browser.</p>
         <div class="stack-tags">
@@ -767,7 +986,6 @@
         </div>
       </article>
 
-      <!-- PLACEHOLDER — verify content and links -->
       <article class="hobby-card" data-tech="vanilla-js">
         <h3>Meerkat Comedy</h3>
         <p class="hobby-desc">Spotlight timer, audience meter, and act scheduler for managing live comedy nights. Works fully offline.</p>
@@ -779,7 +997,6 @@
         </div>
       </article>
 
-      <!-- PLACEHOLDER — verify content and links -->
       <article class="hobby-card" data-tech="vanilla-js">
         <h3>Guitar Zero</h3>
         <p class="hobby-desc">Interactive guitar theory tutor for beginners.</p>
@@ -802,6 +1019,7 @@
 
   <script>
     (function() {
+      /* ── Filter logic ── */
       const chips = document.querySelectorAll('.chip');
       const allCards = document.querySelectorAll('[data-tech]');
       const hobbySection = document.getElementById('hobby-section');
@@ -845,6 +1063,53 @@
           });
 
           hobbySection.style.display = anyHobbyVisible ? '' : 'none';
+        });
+      });
+
+      /* ── Carousel logic ── */
+      document.querySelectorAll('.card-carousel').forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        const prevBtn = carousel.querySelector('.carousel-arrow.prev');
+        const nextBtn = carousel.querySelector('.carousel-arrow.next');
+        const slides = carousel.querySelectorAll('.carousel-slide');
+
+        if (slides.length <= 1) return; /* No nav needed for single images */
+
+        /* Show arrows */
+        prevBtn.removeAttribute('data-hidden');
+        nextBtn.removeAttribute('data-hidden');
+
+        function getActiveIndex() {
+          const scrollLeft = track.scrollLeft;
+          const slideWidth = slides[0].offsetWidth;
+          return Math.round(scrollLeft / slideWidth);
+        }
+
+        function goTo(index) {
+          const slideWidth = slides[0].offsetWidth;
+          track.scrollTo({ left: index * slideWidth, behavior: 'smooth' });
+        }
+
+        function updateDots() {
+          const idx = getActiveIndex();
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+
+        track.addEventListener('scroll', updateDots);
+
+        prevBtn.addEventListener('click', () => {
+          const idx = getActiveIndex();
+          if (idx > 0) goTo(idx - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+          const idx = getActiveIndex();
+          if (idx < slides.length - 1) goTo(idx + 1);
+        });
+
+        dots.forEach(dot => {
+          dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index)));
         });
       });
     })();
