@@ -595,6 +595,100 @@
   /* ── Filter transitions ── */
   .card, .hobby-card { transition: border-color 0.2s, transform 0.2s, opacity 0.25s; }
   .card.hidden, .hobby-card.hidden { display: none; }
+
+  /* ── Demo overlay ── */
+  .demo-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .demo-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .demo-overlay-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
+    height: 48px;
+    min-height: 48px;
+    background: var(--card);
+    border-bottom: 1px solid var(--card-border);
+    flex-shrink: 0;
+  }
+  .demo-overlay-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s, color 0.15s;
+  }
+  .demo-overlay-back:hover {
+    background: rgba(59,130,246,0.1);
+    color: var(--accent-hover);
+  }
+  .demo-overlay-back svg {
+    width: 14px; height: 14px; flex-shrink: 0;
+  }
+  .demo-overlay-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-on-dark-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 50%;
+  }
+  .demo-overlay-newtab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-on-dark-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s;
+    text-decoration: none;
+  }
+  .demo-overlay-newtab:hover { color: var(--text-on-dark); }
+  .demo-overlay-newtab svg { width: 12px; height: 12px; }
+  .demo-overlay iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    background: #fff;
+  }
+  .demo-overlay-loading {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-on-light-sub);
+  }
+
+  @media (max-width: 600px) {
+    .demo-overlay-bar { padding: 0 0.75rem; height: 44px; min-height: 44px; }
+    .demo-overlay-title { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -1017,6 +1111,22 @@
     <a href="https://www.linkedin.com/in/bradley-kruger-228910235/" target="_blank" rel="noopener">LinkedIn</a>
   </footer>
 
+  <!-- ── Demo overlay ── -->
+  <div class="demo-overlay" id="demoOverlay">
+    <div class="demo-overlay-bar">
+      <button class="demo-overlay-back" id="demoClose">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+        Back to Portfolio
+      </button>
+      <span class="demo-overlay-title" id="demoTitle"></span>
+      <a class="demo-overlay-newtab" id="demoNewTab" href="#" target="_blank" rel="noopener">
+        Open in tab
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4v4M14 2L8 8M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3"/></svg>
+      </a>
+    </div>
+    <div class="demo-overlay-loading" id="demoLoading">Loading…</div>
+  </div>
+
   <script>
     (function() {
       /* ── Filter logic ── */
@@ -1064,6 +1174,78 @@
 
           hobbySection.style.display = anyHobbyVisible ? '' : 'none';
         });
+      });
+
+      /* ── Demo overlay ── */
+      const overlay = document.getElementById('demoOverlay');
+      const demoTitle = document.getElementById('demoTitle');
+      const demoNewTab = document.getElementById('demoNewTab');
+      const demoClose = document.getElementById('demoClose');
+      const demoLoading = document.getElementById('demoLoading');
+      let demoIframe = null;
+
+      const ownDomains = ['.vercel.app', 'fashionkiller.co.za', 'chopchoporder.co.za'];
+
+      function isOwnDomain(url) {
+        try {
+          var host = new URL(url).hostname;
+          return ownDomains.some(function(d) {
+            return host === d || host.endsWith(d);
+          });
+        } catch(e) { return false; }
+      }
+
+      function openOverlay(url, title) {
+        demoTitle.textContent = title;
+        demoNewTab.href = url;
+        demoLoading.style.display = '';
+        if (demoIframe) { demoIframe.remove(); demoIframe = null; }
+
+        var iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.setAttribute('loading', 'lazy');
+        iframe.setAttribute('allow', 'fullscreen');
+        iframe.style.display = 'none';
+        iframe.onload = function() {
+          demoLoading.style.display = 'none';
+          iframe.style.display = '';
+        };
+        overlay.appendChild(iframe);
+        demoIframe = iframe;
+
+        requestAnimationFrame(function() { overlay.classList.add('open'); });
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeOverlay() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+        setTimeout(function() {
+          if (demoIframe) { demoIframe.remove(); demoIframe = null; }
+          demoLoading.style.display = '';
+        }, 300);
+      }
+
+      demoClose.addEventListener('click', closeOverlay);
+
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeOverlay();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) closeOverlay();
+      });
+
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('.card-links a');
+        if (!link) return;
+        var href = link.href;
+        if (!isOwnDomain(href)) return;
+
+        e.preventDefault();
+        var cardBody = link.closest('.card-body');
+        var title = cardBody ? cardBody.querySelector('h2, h3') : null;
+        openOverlay(href, title ? title.textContent : '');
       });
 
       /* ── Carousel logic ── */
