@@ -597,6 +597,7 @@
   .card.hidden, .hobby-card.hidden { display: none; }
 
   /* ── Demo overlay ── */
+  .demo-overlay [hidden] { display: none !important; }
   .demo-overlay {
     position: fixed;
     inset: 0;
@@ -681,9 +682,47 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .demo-loading-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
     font-size: 0.85rem;
     color: var(--text-on-light-sub);
   }
+  .demo-spinner {
+    width: 28px; height: 28px;
+    border: 2.5px solid rgba(0,0,0,0.1);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: demo-spin 0.7s linear infinite;
+  }
+  @keyframes demo-spin { to { transform: rotate(360deg); } }
+  .demo-overlay-blocked {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: var(--text-on-light-sub);
+  }
+  .demo-blocked-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent);
+    padding: 0.55rem 1.25rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .demo-blocked-btn:hover { background: var(--accent-hover); }
 
   @media (max-width: 600px) {
     .demo-overlay-bar { padding: 0 0.75rem; height: 44px; min-height: 44px; }
@@ -1124,7 +1163,16 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4v4M14 2L8 8M6 3H3a1 1 0 00-1 1v9a1 1 0 001 1h9a1 1 0 001-1v-3"/></svg>
       </a>
     </div>
-    <div class="demo-overlay-loading" id="demoLoading">Loading…</div>
+    <div class="demo-overlay-loading" id="demoLoading">
+      <div class="demo-loading-inner">
+        <div class="demo-spinner"></div>
+        <span>Loading…</span>
+      </div>
+    </div>
+    <div class="demo-overlay-blocked" id="demoBlocked" hidden>
+      <p>This site can't be embedded directly.</p>
+      <a id="demoBlockedLink" href="#" target="_blank" rel="noopener" class="demo-blocked-btn">Open in new tab</a>
+    </div>
   </div>
 
   <script>
@@ -1182,7 +1230,10 @@
       const demoNewTab = document.getElementById('demoNewTab');
       const demoClose = document.getElementById('demoClose');
       const demoLoading = document.getElementById('demoLoading');
+      const demoBlocked = document.getElementById('demoBlocked');
+      const demoBlockedLink = document.getElementById('demoBlockedLink');
       let demoIframe = null;
+      let demoTimer = null;
 
       const ownDomains = ['.vercel.app', 'fashionkiller.co.za', 'chopchoporder.co.za'];
 
@@ -1195,21 +1246,40 @@
         } catch(e) { return false; }
       }
 
+      function showBlocked(url) {
+        demoLoading.hidden = true;
+        if (demoIframe) { demoIframe.remove(); demoIframe = null; }
+        demoBlockedLink.href = url;
+        demoBlocked.hidden = false;
+      }
+
       function openOverlay(url, title) {
         demoTitle.textContent = title;
         demoNewTab.href = url;
-        demoLoading.style.display = '';
+        demoLoading.hidden = false;
+        demoBlocked.hidden = true;
         if (demoIframe) { demoIframe.remove(); demoIframe = null; }
+        if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
 
         var iframe = document.createElement('iframe');
         iframe.src = url;
-        iframe.setAttribute('loading', 'lazy');
         iframe.setAttribute('allow', 'fullscreen');
         iframe.style.display = 'none';
+
+        var loaded = false;
         iframe.onload = function() {
-          demoLoading.style.display = 'none';
+          loaded = true;
+          if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+          demoLoading.hidden = true;
+          demoBlocked.hidden = true;
           iframe.style.display = '';
         };
+
+        iframe.onerror = function() {
+          if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+          showBlocked(url);
+        };
+
         overlay.appendChild(iframe);
         demoIframe = iframe;
 
@@ -1220,9 +1290,11 @@
       function closeOverlay() {
         overlay.classList.remove('open');
         document.body.style.overflow = '';
+        if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
         setTimeout(function() {
           if (demoIframe) { demoIframe.remove(); demoIframe = null; }
-          demoLoading.style.display = '';
+          demoLoading.hidden = false;
+          demoBlocked.hidden = true;
         }, 300);
       }
 
