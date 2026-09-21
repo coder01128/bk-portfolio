@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Layout Wireframe</title>
+<style>
+  :root {
+    --bg: #1e293b;
+    --surface: #0f172a;
+    --border: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --mono: 'Courier New', monospace;
+    --sans: system-ui, sans-serif;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 32px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h2 {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .token-col h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge {
+    font-size: 13px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-family: var(--mono);
+  }
+  .badge.anth { background: #fefce8; color: #92400e; border: 1px solid #facc15; }
+  .badge.oai  { background: #ffedd5; color: #9a3412; border: 1px solid #f97316; }
+
+  .pair-section {
+    margin-bottom: 10px;
+  }
+  .pair-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .stat-box .period {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .stat-box .values {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .stat-box .val-max { color: var(--green); }
+  .stat-box .val-min { color: var(--red); }
+  .stat-box .sep { color: var(--text-dim); font-weight: 400; font-size: 13px; }
+  .stat-box .dir {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--sans);
+  }
+
+  .note {
+    margin-top: 24px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<h2>Wireframe — per-pair spread stats (ANTH + OAI side by side)</h2>
+
+<div class="kpi-grid">
+  <!-- ANTH column -->
+  <div class="token-col">
+    <h3><span class="badge anth">ANTH</span> Spread stats</h3>
+
+    <div class="pair-section">
+      <div class="pair-label">IG ↔ Binance</div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="period">24h</div>
+          <div class="values">
+            <span class="val-max">+0.007%</span>
+            <span class="sep">/</span>
+            <span class="val-min">-0.962%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell BN</span><span>Buy BN→Sell IG</span></div>
+        </div>
+        <div class="stat-box">
+          <div class="period">7d</div>
+          <div class="values">
+            <span class="val-max">+0.900%</span>
+            <span class="sep">/</span>
+            <span class="val-min">-0.968%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell BN</span><span>Buy IG→Sell BN</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pair-section">
+      <div class="pair-label">IG ↔ Hyperliquid</div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="period">24h</div>
+          <div class="values">
+            <span class="val-max">+3.600%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+1.499%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell HL</span><span>Buy IG→Sell HL</span></div>
+        </div>
+        <div class="stat-box">
+          <div class="period">7d</div>
+          <div class="values">
+            <span class="val-max">+4.457%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+1.499%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell HL</span><span>Buy IG→Sell HL</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pair-section">
+      <div class="pair-label">BN ↔ Hyperliquid</div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="period">24h</div>
+          <div class="values">
+            <span class="val-max">+3.735%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+2.284%</span>
+          </div>
+          <div class="dir"><span>Buy BN→Sell HL</span><span>Buy BN→Sell HL</span></div>
+        </div>
+        <div class="stat-box">
+          <div class="period">7d</div>
+          <div class="values">
+            <span class="val-max">+4.852%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+2.284%</span>
+          </div>
+          <div class="dir"><span>Buy BN→Sell HL</span><span>Buy BN→Sell HL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OAI column -->
+  <div class="token-col">
+    <h3><span class="badge oai">OAI</span> Spread stats</h3>
+
+    <div class="pair-section">
+      <div class="pair-label">IG ↔ Binance</div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="period">24h</div>
+          <div class="values">
+            <span class="val-max">+0.142%</span>
+            <span class="sep">/</span>
+            <span class="val-min">-0.521%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell BN</span><span>Buy BN→Sell IG</span></div>
+        </div>
+        <div class="stat-box">
+          <div class="period">7d</div>
+          <div class="values">
+            <span class="val-max">+1.200%</span>
+            <span class="sep">/</span>
+            <span class="val-min">-0.780%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell BN</span><span>Buy BN→Sell IG</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pair-section">
+      <div class="pair-label">IG ↔ Hyperliquid</div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="period">24h</div>
+          <div class="values">
+            <span class="val-max">+2.810%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+0.930%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell HL</span><span>Buy IG→Sell HL</span></div>
+        </div>
+        <div class="stat-box">
+          <div class="period">7d</div>
+          <div class="values">
+            <span class="val-max">+3.550%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+0.720%</span>
+          </div>
+          <div class="dir"><span>Buy IG→Sell HL</span><span>Buy IG→Sell HL</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pair-section">
+      <div class="pair-label">BN ↔ Hyperliquid</div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="period">24h</div>
+          <div class="values">
+            <span class="val-max">+2.990%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+1.440%</span>
+          </div>
+          <div class="dir"><span>Buy BN→Sell HL</span><span>Buy BN→Sell HL</span></div>
+        </div>
+        <div class="stat-box">
+          <div class="period">7d</div>
+          <div class="values">
+            <span class="val-max">+3.880%</span>
+            <span class="sep">/</span>
+            <span class="val-min">+1.110%</span>
+          </div>
+          <div class="dir"><span>Buy BN→Sell HL</span><span>Buy BN→Sell HL</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>Layout:</strong> Two columns (ANTH left, OAI right). Each column has 3 pair sections with 2 boxes each (24h and 7d). Each box shows max (green) / min (red) with the direction underneath. Total: 12 boxes instead of the current 12, but now covering both tokens. The OAI values shown here are placeholder — they'd pull from the same spread_ticks data using the oai_ columns.
+</div>
+
+</body>
+</html>
