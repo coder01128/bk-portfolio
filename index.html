@@ -827,14 +827,13 @@
   <!-- ══════════════════════════════════════ -->
   <main class="projects">
 
-    <!-- ── 1. Contract Scorer ── -->
-    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,vision-api,llm-api,vercel,document-processing,prompt-engineering">
+    <!-- ── 1. FashionKiller ── -->
+    <article class="card" data-tech="vanilla-js,supabase,vision-api,llm-api,jsbarcode,jspdf,vercel,prompt-engineering,document-processing">
       <div class="card-carousel">
         <div class="carousel-track">
           <div class="carousel-slide">
-            <img src="images/contract-scorer.jpg" alt="Contract Scorer dashboard" onerror="this.style.display='none'">
+            <img src="images/fashionkiller.jpg" alt="FashionKiller tools" onerror="this.style.display='none'">
           </div>
-          <!-- Add more slides: <div class="carousel-slide"><img src="images/contract-scorer-2.jpg" alt="..."></div> -->
         </div>
         <div class="carousel-dots" data-count="1">
           <button class="carousel-dot active" data-index="0"></button>
@@ -843,40 +842,93 @@
         <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
-        <h2>Contract Scorer</h2>
+        <h2>FashionKiller — three tools, one retail business</h2>
         <div class="pso">
           <div class="pso-label problem">Problem</div>
-          <p>Car dealerships sign vendor contracts without knowing if pricing, terms, or cancellation clauses are fair. Manual review misses escalators, hidden fees, and unfavourable data rights.</p>
+          <p>A fashion retailer with three separate bottlenecks: inconsistent product copy taking 3–5 minutes per item, manual barcode label creation burning 30 minutes every day, and a 186 MB stock spreadsheet with no KPIs.</p>
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
-          <ul>
-            <li>Upload a vendor agreement (PDF) — a vision model extracts structured fields</li>
-            <li>Weighted scoring engine evaluates the deal: Pricing 40%, Terms 30%, Flexibility 30%</li>
-            <li>Multi-tenant auth with dealership-level accounts and row-level security</li>
+          <ul class="labeled-list">
+            <li><strong>Koppie-Kat:</strong> <span>Website product copy + Instagram carousel script + TikTok video script + campaign roadmap generated from product photo</span></li>
+            <li><strong>BarcodeAuto:</strong> <span>One-click barcode generation with checksum validation — stock spreadsheet to thermal labels with layout options</span></li>
+            <li><strong>Intake Dashboard:</strong> <span>Structured data entry, margin reporting, inventory + POS tracking, AI-generated copy, image compression</span></li>
           </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
-          <ul>
-            <li>Dashboard with Deal Score, subscores, market comparisons, and AI-generated negotiation talking points</li>
-            <li>Each dealership's data is fully isolated</li>
+          <ul class="labeled-list">
+            <li><strong>Copy:</strong> <span>previously 3–5 minutes per product → now ~20 seconds per product</span></li>
+            <li><strong>Labels:</strong> <span>previously 30 minutes daily → now under 1 minute</span></li>
+            <li>All three tools in daily production use at the business</li>
           </ul>
         </div>
         <details>
           <summary>Stack</summary>
           <div class="stack-tags">
-            <span>React/Vite</span><span>Supabase</span><span>Postgres + RLS</span><span>Auth</span><span>Claude Vision API</span><span>Vercel</span>
+            <span>Vanilla HTML/JS</span><span>Supabase + RLS</span><span>Claude Vision API</span><span>JsBarcode</span><span>jsPDF</span><span>Vercel</span>
           </div>
         </details>
         <div class="card-links">
-          <a href="https://contract-scorer.vercel.app/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live demo</a>
-          <a href="https://github.com/coder01128/contract-scorer" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+          <a href="https://fashionkiller.co.za" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live on site</a>
+          <a href="https://github.com/coder01128/koppie-kat" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Koppie-Kat</a>
+          <a href="https://github.com/coder01128/barcode-auto" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>BarcodeAuto</a>
+          <a href="https://github.com/coder01128/fashionkiller-intake" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Intake</a>
         </div>
       </div>
     </article>
 
-    <!-- ── 2. Bank Statement Pipeline ── -->
+    <!-- ── 2. ChopChop ── -->
+    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,pwa,vercel,multi-tenant-saas">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/chopchop.jpg" alt="ChopChop storefront and dashboard" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
+      </div>
+      <div class="card-body">
+        <h2>ChopChop</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>Small South African businesses need online ordering but can't afford custom development. Each new store meant building from scratch.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <ul>
+            <li>Multi-tenant commerce platform — storefront, seller dashboard, and installable PWA from one codebase</li>
+            <li>Row-level tenant isolation in Postgres</li>
+            <li>Automated leak-test gate runs before every release</li>
+            <li>Same product data drives both customer and seller interfaces</li>
+          </ul>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <ul>
+            <li>Zero code changes to spin up a new tenant</li>
+            <li>New tenants go live without developer involvement</li>
+          </ul>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>React/Vite</span><span>Supabase</span><span>Postgres + RLS</span><span>Auth</span><span>PWA</span><span>Vercel</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://chopchoporder.co.za/la-trattoria" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Storefront</a>
+          <a href="https://app.chopchoporder.co.za/?demo=trattoria" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6h12"/></svg>Dashboard</a>
+          <a href="https://github.com/coder01128/chopchop" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── 3. Bank Statement Pipeline ── -->
     <article class="card" data-tech="vanilla-js,vision-api,llm-api,client-side-pdf,vercel,document-processing">
       <div class="card-carousel">
         <div class="carousel-track">
@@ -928,13 +980,14 @@
       </div>
     </article>
 
-    <!-- ── 3. FashionKiller ── -->
-    <article class="card" data-tech="vanilla-js,supabase,vision-api,llm-api,jsbarcode,jspdf,vercel,prompt-engineering,document-processing">
+    <!-- ── 4. Contract Scorer ── -->
+    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,vision-api,llm-api,vercel,document-processing,prompt-engineering">
       <div class="card-carousel">
         <div class="carousel-track">
           <div class="carousel-slide">
-            <img src="images/fashionkiller.jpg" alt="FashionKiller tools" onerror="this.style.display='none'">
+            <img src="images/contract-scorer.jpg" alt="Contract Scorer dashboard" onerror="this.style.display='none'">
           </div>
+          <!-- Add more slides: <div class="carousel-slide"><img src="images/contract-scorer-2.jpg" alt="..."></div> -->
         </div>
         <div class="carousel-dots" data-count="1">
           <button class="carousel-dot active" data-index="0"></button>
@@ -943,88 +996,35 @@
         <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
       </div>
       <div class="card-body">
-        <h2>FashionKiller — three tools, one retail business</h2>
+        <h2>Contract Scorer</h2>
         <div class="pso">
           <div class="pso-label problem">Problem</div>
-          <p>A fashion retailer with three separate bottlenecks: inconsistent product copy taking 3–5 minutes per item, manual barcode label creation burning 30 minutes every day, and a 186 MB stock spreadsheet with no KPIs.</p>
-        </div>
-        <div class="pso">
-          <div class="pso-label solution">Solution</div>
-          <ul class="labeled-list">
-            <li><strong>Koppie-Kat:</strong> <span>Website product copy + Instagram carousel script + TikTok video script + campaign roadmap generated from product photo</span></li>
-            <li><strong>BarcodeAuto:</strong> <span>One-click barcode generation with checksum validation — stock spreadsheet to thermal labels with layout options</span></li>
-            <li><strong>Intake Dashboard:</strong> <span>Structured data entry, margin reporting, inventory + POS tracking, AI-generated copy, image compression</span></li>
-          </ul>
-        </div>
-        <div class="pso">
-          <div class="pso-label outcome">Outcome</div>
-          <ul class="labeled-list">
-            <li><strong>Copy:</strong> <span>previously 3–5 minutes per product → now ~20 seconds per product</span></li>
-            <li><strong>Labels:</strong> <span>previously 30 minutes daily → now under 1 minute</span></li>
-            <li>All three tools in daily production use at the business</li>
-          </ul>
-        </div>
-        <details>
-          <summary>Stack</summary>
-          <div class="stack-tags">
-            <span>Vanilla HTML/JS</span><span>Supabase + RLS</span><span>Claude Vision API</span><span>JsBarcode</span><span>jsPDF</span><span>Vercel</span>
-          </div>
-        </details>
-        <div class="card-links">
-          <a href="https://fashionkiller.co.za" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live on site</a>
-          <a href="https://github.com/coder01128/koppie-kat" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Koppie-Kat</a>
-          <a href="https://github.com/coder01128/barcode-auto" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>BarcodeAuto</a>
-          <a href="https://github.com/coder01128/fashionkiller-intake" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>Intake</a>
-        </div>
-      </div>
-    </article>
-
-    <!-- ── 4. ChopChop ── -->
-    <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,pwa,vercel,multi-tenant-saas">
-      <div class="card-carousel">
-        <div class="carousel-track">
-          <div class="carousel-slide">
-            <img src="images/chopchop.jpg" alt="ChopChop storefront and dashboard" onerror="this.style.display='none'">
-          </div>
-        </div>
-        <div class="carousel-dots" data-count="1">
-          <button class="carousel-dot active" data-index="0"></button>
-        </div>
-        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
-        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
-      </div>
-      <div class="card-body">
-        <h2>ChopChop</h2>
-        <div class="pso">
-          <div class="pso-label problem">Problem</div>
-          <p>Small South African businesses need online ordering but can't afford custom development. Each new store meant building from scratch.</p>
+          <p>Car dealerships sign vendor contracts without knowing if pricing, terms, or cancellation clauses are fair. Manual review misses escalators, hidden fees, and unfavourable data rights.</p>
         </div>
         <div class="pso">
           <div class="pso-label solution">Solution</div>
           <ul>
-            <li>Multi-tenant commerce platform — storefront, seller dashboard, and installable PWA from one codebase</li>
-            <li>Row-level tenant isolation in Postgres</li>
-            <li>Automated leak-test gate runs before every release</li>
-            <li>Same product data drives both customer and seller interfaces</li>
+            <li>Upload a vendor agreement (PDF) — a vision model extracts structured fields</li>
+            <li>Weighted scoring engine evaluates the deal: Pricing 40%, Terms 30%, Flexibility 30%</li>
+            <li>Multi-tenant auth with dealership-level accounts and row-level security</li>
           </ul>
         </div>
         <div class="pso">
           <div class="pso-label outcome">Outcome</div>
           <ul>
-            <li>Zero code changes to spin up a new tenant</li>
-            <li>New tenants go live without developer involvement</li>
+            <li>Dashboard with Deal Score, subscores, market comparisons, and AI-generated negotiation talking points</li>
+            <li>Each dealership's data is fully isolated</li>
           </ul>
         </div>
         <details>
           <summary>Stack</summary>
           <div class="stack-tags">
-            <span>React/Vite</span><span>Supabase</span><span>Postgres + RLS</span><span>Auth</span><span>PWA</span><span>Vercel</span>
+            <span>React/Vite</span><span>Supabase</span><span>Postgres + RLS</span><span>Auth</span><span>Claude Vision API</span><span>Vercel</span>
           </div>
         </details>
         <div class="card-links">
-          <a href="https://chopchoporder.co.za/la-trattoria" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Storefront</a>
-          <a href="https://app.chopchoporder.co.za/?demo=trattoria" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M2 6h12"/></svg>Dashboard</a>
-          <a href="https://github.com/coder01128/chopchop" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+          <a href="https://contract-scorer.vercel.app/" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.25"/><path d="M2.5 8h11M8 1.75c-1.75 2-2.5 4-2.5 6.25s.75 4.25 2.5 6.25M8 1.75c1.75 2 2.5 4 2.5 6.25s-.75 4.25-2.5 6.25"/></svg>Live demo</a>
+          <a href="https://github.com/coder01128/contract-scorer" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         </div>
       </div>
     </article>
@@ -1111,7 +1111,7 @@
       <article class="hobby-card" data-tech="n8n,docker,rest-api,agentic-orchestration">
         <img src="images/n8n-pipeline.jpg" alt="n8n job pipeline workflow — Apify scrapers, Claude scoring, Gmail digest" class="hobby-thumb" onerror="this.style.display='none'">
         <h3>n8n Automation Pipelines</h3>
-        <p class="hobby-desc">Self-hosted n8n workflows: daily job-matching pipeline (Gmail → AI scoring → digest), broker research summariser, and SA M&A news monitor. Dockerised on a local server.</p>
+        <p class="hobby-desc">Self-hosted n8n workflows: daily job-matching pipeline (Indeed, PNet &amp; LinkedIn via Apify → Claude scoring → Gmail digest), broker research summariser, and SA M&A news monitor. Dockerised on a local server.</p>
         <div class="stack-tags">
           <span>n8n</span><span>Docker</span><span>REST APIs</span><span>Gmail</span>
         </div>
