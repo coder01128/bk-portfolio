@@ -113,15 +113,20 @@
     .nav-back {
       font-family: var(--mono);
       font-size: var(--step-cap);
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--muted);
-      transition: color 0.3s;
+      color: var(--bg);
+      background: var(--brand);
+      border: 1px solid var(--brand);
+      border-radius: var(--r);
+      padding: 0.55rem 1rem;
+      transition: background 0.3s, color 0.3s;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    .nav-back:hover { color: var(--brand); }
+    .nav-back:hover { background: transparent; color: var(--brand); }
     .nav-back svg { width: 14px; height: 14px; }
     .nav-badge {
       font-family: var(--mono);
@@ -498,13 +503,15 @@
       font-size: var(--step-cap);
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--muted);
+      font-weight: 700;
+      color: var(--brand);
+      background: var(--brand-soft);
       padding: 0.85rem 1.5rem;
-      border: 1px solid var(--line);
+      border: 1px solid var(--brand);
       border-radius: var(--r);
-      transition: color 0.3s, border-color 0.3s;
+      transition: color 0.3s, background 0.3s;
     }
-    .btn-outline:hover { color: var(--brand); border-color: var(--brand); }
+    .btn-outline:hover { color: var(--bg); background: var(--brand); }
 
     /* ═══════════════════════════════════════════
        FOOTER
