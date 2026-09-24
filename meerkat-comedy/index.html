@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meerkat Comedy — Production Tools | Case Study</title>
+  <meta name="description" content="Three offline-first production tools for Meerkat Comedy's live shows in Johannesburg.">
+
+  <!-- Fonts: Cabinet Grotesk (display), General Sans (body) via Fontshare; Space Mono (labels) via Google -->
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800&f[]=general-sans@400,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP + plugins (all free since Apr 2025) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js" defer></script>
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js" defer></script>
+
+  <style>
+    /* ═══════════════════════════════════════════
+       TOKENS — Direction C Industrial Precision
+       ═══════════════════════════════════════════ */
+    :root {
+      --brand:      #E8A020;
+      --brand-soft: color-mix(in srgb, var(--brand) 15%, transparent);
+      --brand-deep: color-mix(in srgb, var(--brand) 80%, black);
+
+      --bg:         #0e0e0e;
+      --bg-raised:  #151515;
+      --bg-card:    #1a1a1a;
+      --ink:        #e7e5e0;
+      --muted:      #8a8580;
+      --line:       rgba(232, 160, 32, 0.12);
+
+      --display: "Cabinet Grotesk", sans-serif;
+      --body:    "General Sans", sans-serif;
+      --mono:    "Space Mono", monospace;
+
+      --step-hero: clamp(2.4rem, 6vw, 5.5rem);
+      --step-h2:   clamp(1.6rem, 3.2vw, 2.8rem);
+      --step-h3:   clamp(1.2rem, 2vw, 1.5rem);
+      --step-body: clamp(0.95rem, 1.05vw, 1.1rem);
+      --step-cap:  0.75rem;
+
+      --container: min(92vw, 1140px);
+      --r: 6px;
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: auto; -webkit-font-smoothing: antialiased; }
+    body {
+      font-family: var(--body);
+      font-size: var(--step-body);
+      font-weight: 400;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; border: none; cursor: pointer; background: none; color: inherit; }
+
+    /* ═══════════════════════════════════════════
+       GRAIN OVERLAY (mandated)
+       ═══════════════════════════════════════════ */
+    .grain::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ═══════════════════════════════════════════
+       UTILITIES
+       ═══════════════════════════════════════════ */
+    .container { width: var(--container); margin: 0 auto; }
+    .mono-label {
+      font-family: var(--mono);
+      font-size: var(--step-cap);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--brand);
+      font-weight: 400;
+    }
+    .section-pad { padding: clamp(4.5rem, 11vh, 8rem) 0; }
+
+    /* ═══════════════════════════════════════════
+       NAV
+       ═══════════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(14, 14, 14, 0.7);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-back {
+      font-family: var(--mono);
+      font-size: var(--step-cap);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-back:hover { color: var(--brand); }
+    .nav-back svg { width: 14px; height: 14px; }
+    .nav-badge {
+      font-family: var(--mono);
+      font-size: var(--step-cap);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand);
+      border: 1px solid var(--line);
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--r);
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 0 clamp(4rem, 10vh, 7rem);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(232, 160, 32, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(232, 160, 32, 0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-label { margin-bottom: 1.5rem; }
+    .hero-title {
+      font-family: var(--display);
+      font-size: var(--step-hero);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      max-width: 14ch;
+      margin-bottom: 2rem;
+      visibility: hidden;
+    }
+    .hero-sub {
+      max-width: 52ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      line-height: 1.7;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 5vw;
+      font-family: var(--mono);
+      font-size: var(--step-cap);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 3rem;
+      background: var(--brand);
+      display: block;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ═══════════════════════════════════════════
+       BRIEF
+       ═══════════════════════════════════════════ */
+    .brief { background: var(--bg-raised); }
+    .brief-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: start;
+    }
+    .brief-narrative h2 {
+      font-family: var(--display);
+      font-size: var(--step-h2);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1.75rem;
+    }
+    .brief-narrative p {
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      max-width: 58ch;
+    }
+    .brief-narrative p:last-child { margin-bottom: 0; }
+    .brief-meta {
+      border-left: 1px solid var(--line);
+      padding-left: 2rem;
+    }
+    .meta-item {
+      margin-bottom: 1.75rem;
+    }
+    .meta-item:last-child { margin-bottom: 0; }
+    .meta-item .mono-label { margin-bottom: 0.35rem; display: block; }
+    .meta-item p {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════════
+       TOOLS (editorial list — no fake numbers)
+       ═══════════════════════════════════════════ */
+    .tools { background: var(--bg); }
+    .tools-header {
+      margin-bottom: clamp(3rem, 6vh, 4.5rem);
+    }
+    .tools-header h2 {
+      font-family: var(--display);
+      font-size: var(--step-h2);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .tool-row {
+      border-top: 1px solid var(--line);
+      padding: clamp(2rem, 4vh, 3rem) 0;
+      display: grid;
+      grid-template-columns: 260px 1fr auto;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    .tool-row:last-child { border-bottom: 1px solid var(--line); }
+    .tool-name {
+      font-family: var(--display);
+      font-size: var(--step-h3);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .tool-name .mono-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.7rem;
+    }
+    .tool-desc {
+      color: var(--muted);
+      max-width: 50ch;
+    }
+    .tool-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .tool-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      color: var(--brand);
+      white-space: nowrap;
+    }
+    .tool-action {
+      font-family: var(--mono);
+      font-size: var(--step-cap);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--brand);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      padding-top: 0.5rem;
+    }
+    .tool-action:hover { opacity: 0.7; }
+
+    /* ═══════════════════════════════════════════
+       GALLERY — Signature: Pinned Horizontal Scroll
+       ═══════════════════════════════════════════ */
+    .gallery {
+      background: var(--bg-raised);
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-header {
+      padding: clamp(3rem, 6vh, 4.5rem) 0 clamp(2rem, 3vh, 3rem);
+    }
+    .gallery-header h2 {
+      font-family: var(--display);
+      font-size: var(--step-h2);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .gallery-header p {
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+    .gallery-track {
+      display: flex;
+      gap: clamp(1.25rem, 2vw, 2rem);
+      padding: 0 4vw 0 4vw;
+      will-change: transform;
+    }
+    .gallery-card {
+      flex: 0 0 clamp(300px, 42vw, 520px);
+      aspect-ratio: 16 / 10;
+      border-radius: var(--r);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+    }
+    .screenshot-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-card);
+      border: 1px solid rgba(232, 160, 32, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      position: relative;
+      transition: border-color 0.4s, transform 0.4s;
+    }
+    .gallery-card:hover .screenshot-placeholder {
+      border-color: rgba(232, 160, 32, 0.35);
+    }
+    /* scanline texture on placeholders */
+    .screenshot-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(232, 160, 32, 0.015) 3px,
+        rgba(232, 160, 32, 0.015) 4px
+      );
+      pointer-events: none;
+    }
+    .screenshot-placeholder .ph-icon {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(232, 160, 32, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .screenshot-placeholder .ph-icon svg {
+      width: 18px;
+      height: 18px;
+      color: var(--brand);
+      opacity: 0.5;
+    }
+    .ph-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-align: center;
+      max-width: 20ch;
+    }
+    .ph-hint {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(138, 133, 128, 0.4);
+    }
+    /* gallery progress bar */
+    .gallery-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--brand);
+      width: 0%;
+      z-index: 5;
+    }
+
+    /* ═══════════════════════════════════════════
+       STATS (T2 count-up)
+       ═══════════════════════════════════════════ */
+    .stats { background: var(--bg); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: var(--display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--brand);
+      margin-bottom: 0.5rem;
+    }
+    .stat-number .stat-suffix {
+      font-size: 0.5em;
+      opacity: 0.7;
+      font-weight: 700;
+    }
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    /* ═══════════════════════════════════════════
+       CTA / CLOSE
+       ═══════════════════════════════════════════ */
+    .close-cta {
+      background: var(--bg-raised);
+      text-align: center;
+    }
+    .close-cta h2 {
+      font-family: var(--display);
+      font-size: var(--step-h2);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      max-width: 22ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .close-cta .close-sub {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 44ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #25D366;
+      color: #fff;
+      font-family: var(--body);
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--r);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.25);
+    }
+    .btn-wa svg { width: 20px; height: 20px; }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: var(--step-cap);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      padding: 0.85rem 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .btn-outline:hover { color: var(--brand); border-color: var(--brand); }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ */
+    .footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .footer-osw {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+    .footer-osw:hover { color: var(--brand); }
+
+    /* ═══════════════════════════════════════════
+       LIGHTBOX
+       ═══════════════════════════════════════════ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .lightbox.active { opacity: 1; pointer-events: all; }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      transition: color 0.3s;
+      z-index: 5;
+    }
+    .lightbox-close:hover { color: var(--ink); }
+    .lightbox-close svg { width: 24px; height: 24px; }
+    .lightbox-counter {
+      position: absolute;
+      top: 1.75rem;
+      left: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      z-index: 5;
+    }
+    .lightbox-body {
+      width: 80vw;
+      height: 80vh;
+      position: relative;
+    }
+    .lightbox-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-card);
+      border: 1px solid rgba(232, 160, 32, 0.12);
+      border-radius: var(--r);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .lightbox-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px, transparent 3px,
+        rgba(232, 160, 32, 0.015) 3px,
+        rgba(232, 160, 32, 0.015) 4px
+      );
+      pointer-events: none;
+    }
+    .lb-title {
+      font-family: var(--display);
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 700;
+    }
+    .lb-subtitle {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .lightbox-caption {
+      margin-top: 1.25rem;
+      text-align: center;
+      max-width: 50ch;
+    }
+    .lightbox-caption h3 {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .lightbox-caption p {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .lb-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      transition: color 0.3s;
+      z-index: 5;
+    }
+    .lb-arrow:hover { color: var(--brand); }
+    .lb-arrow svg { width: 28px; height: 28px; }
+    .lb-prev { left: clamp(0.75rem, 2vw, 2rem); }
+    .lb-next { right: clamp(0.75rem, 2vw, 2rem); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .brief-grid {
+        grid-template-columns: 1fr;
+      }
+      .brief-meta {
+        border-left: none;
+        border-top: 1px solid var(--line);
+        padding-left: 0;
+        padding-top: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      .tool-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .tool-action {
+        padding-top: 0;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem 1.5rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero { min-height: 90vh; padding-bottom: 3rem; }
+      .hero-scroll { display: none; }
+      .brief-meta { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer .container { flex-direction: column; gap: 0.75rem; text-align: center; }
+      .cta-row { flex-direction: column; }
+      .gallery-card { flex: 0 0 85vw; }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-title { visibility: visible !important; }
+      .hero-scroll::after { animation: none; }
+    }
+  </style>
+</head>
+
+<body class="grain">
+
+  <!-- ════════════ NAV ════════════ -->
+  <nav class="nav">
+    <div class="container">
+      <a href="../" class="nav-back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Portfolio
+      </a>
+      <span class="nav-badge">Case Study</span>
+    </div>
+  </nav>
+
+  <!-- ════════════ HERO ════════════ -->
+  <section class="hero">
+    <div class="container hero-content">
+      <p class="mono-label hero-label">Case Study &mdash; Meerkat Comedy</p>
+      <h1 class="hero-title" data-hero-title>Backstage tools for a live comedy night in Johannesburg.</h1>
+      <p class="hero-sub">Rightside Entertainment needed offline production tools for their Meerkat Comedy shows — audience meters, act controllers, and giveaway systems, all running from a single browser tab with no internet required.</p>
+    </div>
+    <div class="hero-scroll" aria-hidden="true">Scroll</div>
+  </section>
+
+  <!-- ════════════ THE BRIEF ════════════ -->
+  <section class="brief section-pad">
+    <div class="container">
+      <div class="brief-grid">
+        <div class="brief-narrative" data-reveal>
+          <p class="mono-label" style="margin-bottom:1rem;">The Brief</p>
+          <h2>A growing show with a manual backstage.</h2>
+          <p>Meerkat Comedy is a live stand-up night in Johannesburg run by Rightside Entertainment in partnership with Ster-Kinekor Cinemas.</p>
+          <p>They needed tools that worked in a venue without Wi-Fi, ran from a single laptop, and could be operated by someone who isn't a developer. No apps to install. No accounts to create. Just open a file and run the show.</p>
+          <p>The result is three purpose-built browser tools — each a single HTML file with no dependencies, no server, and no internet needed at showtime.</p>
+          <p>The toolkit also covers the on-screen visuals — animated prize wheel spins, full-screen winner reveals, act transition graphics, and the Meerkat Meter's real-time LED applause bar with confetti on new peaks. These render in the browser with no external dependencies. Neon intro animations were pre-rendered in Python with Manim.</p>
+        </div>
+        <div class="brief-meta" data-reveal>
+          <div class="meta-item">
+            <span class="mono-label">Client</span>
+            <p>Rightside Entertainment</p>
+          </div>
+          <div class="meta-item">
+            <span class="mono-label">Project</span>
+            <p>Meerkat Comedy Toolkit</p>
+          </div>
+          <div class="meta-item">
+            <span class="mono-label">Deliverables</span>
+            <p>3 production tools</p>
+          </div>
+          <div class="meta-item">
+            <span class="mono-label">Stack</span>
+            <p>Vanilla HTML/JS, Web Audio API, postMessage sync, Python (Manim)</p>
+          </div>
+          <div class="meta-item">
+            <span class="mono-label">Constraints</span>
+            <p>Offline-first, single-file, no build step</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ THE TOOLKIT ════════════ -->
+  <section class="tools section-pad">
+    <div class="container">
+      <div class="tools-header" data-reveal>
+        <p class="mono-label" style="margin-bottom:0.75rem;">The Toolkit</p>
+        <h2>Three tools. One production stack.</h2>
+      </div>
+
+      <!-- Tool 1: Spotlight -->
+      <div class="tool-row" data-reveal>
+        <div class="tool-name">
+          <span class="mono-label">Tool</span>
+          Spotlight Controller
+        </div>
+        <div>
+          <p class="tool-desc">The show's nerve centre. A single HTML file opens three synchronised popup windows — Winner, Wheel, and Acts — all controlled from one master dashboard. Sound effects are Base64-embedded, so playback has no load delay. No server, no internet, no dependencies.</p>
+          <div class="tool-features">
+            <span class="tool-tag">postMessage sync</span>
+            <span class="tool-tag">Base64 audio</span>
+            <span class="tool-tag">Multi-window</span>
+            <span class="tool-tag">Offline</span>
+          </div>
+        </div>
+        <button class="tool-action" onclick="openLightbox(0)">View &rarr;</button>
+      </div>
+
+      <!-- Tool 2: Meerkat Meter -->
+      <div class="tool-row" data-reveal>
+        <div class="tool-name">
+          <span class="mono-label">Tool</span>
+          Meerkat Meter
+        </div>
+        <div>
+          <p class="tool-desc">A real-time applause visualiser. A vertical LED-style bar responds to venue audio input with per-act peak markers for comparing crowd responses across the night. A new record triggers confetti. Adjustable sensitivity accounts for different venue acoustics.</p>
+          <div class="tool-features">
+            <span class="tool-tag">Web Audio API</span>
+            <span class="tool-tag">Peak tracking</span>
+            <span class="tool-tag">Confetti FX</span>
+            <span class="tool-tag">Sensitivity tuning</span>
+          </div>
+        </div>
+        <button class="tool-action" onclick="openLightbox(5)">View &rarr;</button>
+      </div>
+
+      <!-- Tool 3: Acts Manager -->
+      <div class="tool-row" data-reveal>
+        <div class="tool-name">
+          <span class="mono-label">Tool</span>
+          Acts Manager
+        </div>
+        <div>
+          <p class="tool-desc">On-demand act control with clickable buttons for each performer. Syncs with the Meter for a unified backstage view. The host sees everything on one screen — who's up, who's next, and how the crowd responded.</p>
+          <div class="tool-features">
+            <span class="tool-tag">Per-act buttons</span>
+            <span class="tool-tag">Meter sync</span>
+            <span class="tool-tag">Live status</span>
+          </div>
+        </div>
+        <button class="tool-action" onclick="openLightbox(3)">View &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ GALLERY — Signature Moment ════════════ -->
+  <section class="gallery section-pad">
+    <div class="container gallery-header" data-reveal>
+      <p class="mono-label" style="margin-bottom:0.75rem;">The Build</p>
+      <h2>Screenshots from the production toolkit.</h2>
+      <p>Click any screenshot to view full size.</p>
+    </div>
+    <div class="gallery-track" id="galleryTrack">
+
+      <div class="gallery-card" onclick="openLightbox(0)">
+        <img src="spotlight-master-dashboard.png" alt="Spotlight — Master Dashboard" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+      <div class="gallery-card" onclick="openLightbox(1)">
+        <img src="spotlight-master-dashboard2.png" alt="Spotlight — Master Dashboard 2" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+      <div class="gallery-card" onclick="openLightbox(2)">
+        <img src="spotlight-wheel-popup.png" alt="Spotlight — Wheel Popup" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+      <div class="gallery-card" onclick="openLightbox(3)">
+        <img src="spotlight-acts-popup.png" alt="Spotlight — Acts Popup" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+      <div class="gallery-card" onclick="openLightbox(4)">
+        <img src="spotlight-winner-popup.png" alt="Spotlight — Winner Popup" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+      <div class="gallery-card" onclick="openLightbox(5)">
+        <img src="meerkat-meter-full-interface.png" alt="Meerkat Meter — Full Interface" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+      <div class="gallery-card" onclick="openLightbox(6)">
+        <img src="meerkat-meter-peak-record.png" alt="Meerkat Meter — Peak Record" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:6px;">
+      </div>
+
+    </div>
+    <div class="gallery-progress" id="galleryProgress"></div>
+  </section>
+
+  <!-- ════════════ STATS ════════════ -->
+  <section class="stats section-pad">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item" data-reveal>
+          <div class="stat-number" data-count="3">0</div>
+          <div class="stat-label">Tools shipped</div>
+        </div>
+        <div class="stat-item" data-reveal>
+          <div class="stat-number" data-count="1">0</div>
+          <div class="stat-label">File each</div>
+        </div>
+        <div class="stat-item" data-reveal>
+          <div class="stat-number" data-count="0">0</div>
+          <div class="stat-label">Server dependencies</div>
+        </div>
+        <div class="stat-item" data-reveal>
+          <div class="stat-number"><span data-count="2">0</span><span class="stat-suffix">MB</span></div>
+          <div class="stat-label">Total footprint</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ CTA / CLOSE ════════════ -->
+  <section class="close-cta section-pad">
+    <div class="container">
+      <p class="mono-label" style="margin-bottom:1rem;" data-reveal>Get in Touch</p>
+      <h2 data-reveal>Need something similar built?</h2>
+      <p class="close-sub" data-reveal>Custom tools built for a specific job — offline-capable where needed, with no unnecessary dependencies.</p>
+      <div class="cta-row" data-reveal>
+        <a href="https://wa.me/27768131614?text=Hi%2C%20I%20saw%20the%20Meerkat%20Comedy%20case%20study%20and%20I'm%20interested%20in%20custom%20tools." class="btn-wa" data-magnetic>
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a href="../" class="btn-outline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Portfolio
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ FOOTER ════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <span class="footer-copy">Built by OneShot Web &mdash; darKLoud digitAI</span>
+      <a href="https://oneshotweb.co.za" class="footer-osw">oneshotweb.co.za</a>
+    </div>
+  </footer>
+
+  <!-- ════════════ LIGHTBOX ════════════ -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <span class="lightbox-counter" id="lbCounter"></span>
+    <button class="lb-arrow lb-prev" onclick="prevSlide()" aria-label="Previous">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="lb-arrow lb-next" onclick="nextSlide()" aria-label="Next">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lightbox-body" id="lbBody">
+      <div class="lightbox-placeholder">
+        <div class="ph-icon" style="width:56px;height:56px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;color:var(--brand);opacity:0.5;"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <span class="lb-title" id="lbTitle"></span>
+        <span class="lb-subtitle">Screenshot</span>
+      </div>
+    </div>
+    <div class="lightbox-caption">
+      <h3 id="lbCaptionTitle"></h3>
+      <p id="lbCaptionDesc"></p>
+    </div>
+  </div>
+
+  <!-- ════════════ SCRIPTS ════════════ -->
+  <script>
+    /* ── Screenshot data ── */
+    const screenshots = [
+      { title: 'Spotlight — Master Dashboard',      desc: 'Main control panel with all popup window launchers and audio controls.' },
+      { title: 'Spotlight — Master Dashboard 2',     desc: 'Secondary view of the master dashboard layout.' },
+      { title: 'Spotlight — Wheel Popup',            desc: 'Prize wheel spinner with weighted segments and sound effects.' },
+      { title: 'Spotlight — Acts Popup',             desc: 'Act transition display synced to the master controller.' },
+      { title: 'Spotlight — Winner Popup',           desc: 'Full-screen winner announcement overlay with animated reveal.' },
+      { title: 'Meerkat Meter — Full Interface',     desc: 'Vertical LED applause bar with act labels and sensitivity controls.' },
+      { title: 'Meerkat Meter — Peak Record',        desc: 'Confetti celebration triggered on a new all-time peak.' }
+    ];
+
+    let currentSlide = 0;
+
+    function openLightbox(index) {
+      currentSlide = index;
+      updateLightbox();
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % screenshots.length;
+      updateLightbox();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + screenshots.length) % screenshots.length;
+      updateLightbox();
+    }
+
+    function updateLightbox() {
+      const s = screenshots[currentSlide];
+      const cards = document.querySelectorAll('#galleryTrack .gallery-card');
+      const card = cards[currentSlide];
+      const img = card ? card.querySelector('img') : null;
+      const lbBody = document.getElementById('lbBody');
+      document.getElementById('lbCounter').textContent = `${currentSlide + 1} / ${screenshots.length}`;
+      document.getElementById('lbCaptionTitle').textContent = s.title;
+      document.getElementById('lbCaptionDesc').textContent = s.desc;
+      if (img) {
+        lbBody.innerHTML = `<img src="${img.src}" alt="${s.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:6px;">`;
+      } else {
+        lbBody.innerHTML = `
+      <div class="lightbox-placeholder">
+        <div class="ph-icon" style="width:56px;height:56px;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;color:var(--brand);opacity:0.5;">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <span class="lb-title">${s.title}</span>
+        <span class="lb-subtitle">Screenshot placeholder</span>
+      </div>`;
+      }
+    }
+
+    /* ── Keyboard nav for lightbox ── */
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    /* ── Backdrop close ── */
+    document.getElementById('lightbox').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeLightbox();
+    });
+
+    /* ═══════════════════════════════════════════
+       GSAP + Lenis Init
+       ═══════════════════════════════════════════ */
+    window.addEventListener('load', () => {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      gsap.registerPlugin(ScrollTrigger, SplitText);
+
+      /* ── Lenis smooth scroll ── */
+      if (!reduce) {
+        const lenis = new Lenis({
+          duration: 1.1,
+          easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(t => lenis.raf(t * 1000));
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      /* ── Hero headline: SplitText line reveal ── */
+      const heroH1 = document.querySelector('[data-hero-title]');
+      if (heroH1 && !reduce) {
+        const split = new SplitText(heroH1, { type: 'lines', linesClass: 'line' });
+        gsap.set(heroH1, { autoAlpha: 1 });
+        gsap.from(split.lines, {
+          yPercent: 120,
+          opacity: 0,
+          duration: 1.1,
+          ease: 'power3.out',
+          stagger: 0.13
+        });
+      } else if (heroH1) {
+        heroH1.style.visibility = 'visible';
+      }
+
+      /* ── Scroll reveals ── */
+      if (!reduce) {
+        gsap.utils.toArray('[data-reveal]').forEach(el => {
+          gsap.from(el, {
+            y: 40,
+            opacity: 0,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 84%' },
+            stagger: el.dataset.reveal === 'stagger' ? 0.1 : 0
+          });
+        });
+      }
+
+      /* ── Count-up stats ── */
+      gsap.utils.toArray('[data-count]').forEach(el => {
+        const end = +el.dataset.count;
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            gsap.fromTo(el, { innerText: 0 }, {
+              innerText: end,
+              duration: 1.4,
+              ease: 'power2.out',
+              snap: { innerText: 1 },
+              onUpdate() { el.innerText = Math.round(+el.innerText); }
+            });
+          }
+        });
+      });
+
+      /* ── Signature: Pinned horizontal scroll gallery ── */
+      const track = document.getElementById('galleryTrack');
+      const progressBar = document.getElementById('galleryProgress');
+      if (track && !reduce) {
+        const getScrollAmount = () => track.scrollWidth - track.parentElement.offsetWidth;
+
+        gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.gallery',
+            start: 'top top',
+            end: () => `+=${getScrollAmount()}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            onUpdate: self => {
+              if (progressBar) progressBar.style.width = (self.progress * 100) + '%';
+            }
+          }
+        });
+      }
+
+      /* ── Magnetic buttons ── */
+      if (!reduce) {
+        document.querySelectorAll('[data-magnetic]').forEach(btn => {
+          btn.addEventListener('mousemove', e => {
+            const r = btn.getBoundingClientRect();
+            gsap.to(btn, {
+              x: (e.clientX - r.left - r.width / 2) * 0.25,
+              y: (e.clientY - r.top - r.height / 2) * 0.25,
+              duration: 0.4
+            });
+          });
+          btn.addEventListener('mouseleave', () => {
+            gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1,0.4)' });
+          });
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
