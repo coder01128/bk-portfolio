@@ -177,28 +177,66 @@
     line-height: 1;
   }
 
+  .filters-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-on-light);
+    margin-bottom: 0.4rem;
+  }
+  .filters-heading svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .filters-heading span { font-weight: 400; color: var(--text-on-light-sub); }
+
   .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-size: 0.8125rem;
     font-weight: 500;
     line-height: 1;
-    padding: 0.4rem 0.85rem;
+    padding: 0.4rem 0.85rem 0.4rem 0.5rem;
     border: 1.5px solid var(--chip-border);
     border-radius: 100px;
-    background: var(--chip-bg);
+    background: #FFFFFF;
     color: var(--text-on-light);
     cursor: pointer;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    box-shadow: 0 1px 0 rgba(29,29,31,0.18);
+    transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
     user-select: none;
     white-space: nowrap;
   }
-  .chip:hover {
-    background: rgba(29,29,31,0.06);
+  .chip::before {
+    content: '+';
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: rgba(29,29,31,0.10);
+    font-size: 0.8125rem; font-weight: 600; line-height: 1;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
   }
+  .chip:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 6px rgba(59,130,246,0.25);
+    transform: translateY(-1px);
+  }
+  .chip:hover::before { background: var(--accent); color: #fff; }
   .chip.active {
     background: var(--chip-active-bg);
     color: var(--chip-active-text);
     border-color: var(--chip-active-bg);
+    box-shadow: none;
   }
+  .chip.active::before {
+    content: '¹3';
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.6875rem;
+  }
+  .chip[data-tech="all"] { padding-left: 0.85rem; }
+  .chip[data-tech="all"]::before { display: none; }
 
   .chip-all {
     margin-bottom: 0.2rem;
@@ -810,6 +848,10 @@
 
   <!-- ── Filter Chips ── -->
   <nav class="filters wrap" aria-label="Filter projects by technology">
+    <div class="filters-heading">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h12l-4.5 5.5V13l-3-1.5V8.5L2 3z"/></svg>
+      Filter projects by technology <span>— select one or more</span>
+    </div>
     <div class="chip-all">
       <button class="chip active" data-tech="all">All</button>
     </div>
@@ -843,6 +885,8 @@
     </div>
     <div class="filter-row">
       <span class="filter-label">Tooling & deploy</span>
+      <button class="chip" data-tech="camunda">Camunda</button>
+      <button class="chip" data-tech="bpmn-dmn">BPMN &amp; DMN</button>
       <button class="chip" data-tech="n8n">n8n</button>
       <button class="chip" data-tech="docker">Docker</button>
       <button class="chip" data-tech="client-side-pdf">Client-side PDF</button>
@@ -859,7 +903,56 @@
   <!-- ══════════════════════════════════════ -->
   <main class="projects">
 
-    <!-- ── 1. FashionKiller ── -->
+    <!-- ── 1. Camunda Invoice Orchestration ── -->
+    <article class="card" data-tech="camunda,bpmn-dmn,llm-api,agentic-orchestration,prompt-engineering,rest-api,nodejs">
+      <div class="card-carousel">
+        <div class="carousel-track">
+          <div class="carousel-slide">
+            <img src="images/camunda.png" alt="Camunda approval routing BPMN process" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="carousel-dots" data-count="1">
+          <button class="carousel-dot active" data-index="0"></button>
+        </div>
+        <button class="carousel-arrow prev" data-hidden="true">&#8249;</button>
+        <button class="carousel-arrow next" data-hidden="true">&#8250;</button>
+      </div>
+      <div class="card-body">
+        <h2>Camunda : Restaurant Invoice Orchestration</h2>
+        <div class="pso">
+          <div class="pso-label problem">Problem</div>
+          <p>A multi-outlet restaurant group buys everything through head office. Every supplier invoice has to be matched to the purchase order and the goods actually received, checked for duplicates and price errors, and approved by value. It is a slow manual chain where mistakes reach payment and approval rules are hard to audit.</p>
+        </div>
+        <div class="pso">
+          <div class="pso-label solution">Solution</div>
+          <ul>
+            <li>Seven BPMN processes on Camunda 8: invoice-to-pay, 3-way match, supplier query, waste write-off, pour-cost reconciliation, stock reorder, and a shared approval routine</li>
+            <li>Deterministic where rules exist: a DMN decision table routes each approval to auto, manager, or director, with validation, duplicate detection, and invoice / PO / goods-received matching</li>
+            <li>Claude reviews each invoice's line items through Camunda's AI Agent connector and returns structured flags. Any flag or match discrepancy removes the auto-approve option</li>
+            <li>Approval limits live in admin-managed cluster variables, and who can approve what is enforced by Camunda authorizations, not the UI</li>
+          </ul>
+        </div>
+        <div class="pso">
+          <div class="pso-label outcome">Outcome</div>
+          <ul>
+            <li>Working prototype tested live on Camunda 8.9: 8/8 approval-routing and 8/8 invoice-to-pay scenarios pass</li>
+            <li>Every model, deployment, test, and config change was made from Claude Code through the c8ctl CLI, not by clicking through the Console</li>
+            <li>AI flags a query, humans decide where money moves on uncertain ground. Built on fictional data with demo limits; no POS integration claimed</li>
+          </ul>
+        </div>
+        <details>
+          <summary>Stack</summary>
+          <div class="stack-tags">
+            <span>Camunda 8</span><span>BPMN</span><span>DMN</span><span>FEEL</span><span>AI Agent connector</span><span>Claude API</span><span>c8ctl CLI</span><span>Node.js</span>
+          </div>
+        </details>
+        <div class="card-links">
+          <a href="https://github.com/coder01128/camunda-invoice-orchestration" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── 2. FashionKiller ── -->
     <article class="card" data-tech="vanilla-js,supabase,vision-api,llm-api,jsbarcode,jspdf,vercel,prompt-engineering,document-processing">
       <div class="card-carousel">
         <div class="carousel-track">
@@ -912,7 +1005,7 @@
       </div>
     </article>
 
-    <!-- ── 2. ChopChop ── -->
+    <!-- ── 3. ChopChop ── -->
     <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,pwa,vercel,multi-tenant-saas">
       <div class="card-carousel">
         <div class="carousel-track">
@@ -962,7 +1055,7 @@
       </div>
     </article>
 
-    <!-- ── 3. Bank Statement Pipeline ── -->
+    <!-- ── 4. Bank Statement Pipeline ── -->
     <article class="card" data-tech="vanilla-js,vision-api,llm-api,client-side-pdf,vercel,document-processing">
       <div class="card-carousel">
         <div class="carousel-track">
@@ -1014,7 +1107,7 @@
       </div>
     </article>
 
-    <!-- ── 4. Contract Scorer ── -->
+    <!-- ── 5. Contract Scorer ── -->
     <article class="card" data-tech="react-vite,supabase,postgres-rls,auth,vision-api,llm-api,vercel,document-processing,prompt-engineering">
       <div class="card-carousel">
         <div class="carousel-track">
@@ -1063,7 +1156,7 @@
       </div>
     </article>
 
-    <!-- ── 5. Agency Content Pipeline ── -->
+    <!-- ── 6. Agency Content Pipeline ── -->
     <article class="card" data-tech="python,langgraph,llm-api,rest-api,agentic-orchestration,prompt-engineering">
       <div class="card-carousel">
         <div class="carousel-track">
